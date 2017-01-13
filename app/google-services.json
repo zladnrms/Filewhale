@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "168348241051",
+    "project_id": "filewhale"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168348241051:android:c5dfa146308d2741",
+        "android_client_info": {
+          "package_name": "filewhalewebhard.defytech.wmqkem.filewhalewebhard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "168348241051-9coi22qvuhcj39ql1klu6kb9jk7g8jh2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "filewhalewebhard.defytech.wmqkem.filewhalewebhard",
+            "certificate_hash": "77C225D51AFE94D9E82684CD8E44632727841DD4"
+          }
+        },
+        {
+          "client_id": "168348241051-8dsighbtk18ihet3c3f8rtcvt73t69t6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhVpnIKYTMWDd0Q2K9qRQ1M0Vhh4bpBnY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

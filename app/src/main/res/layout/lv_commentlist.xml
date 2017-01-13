@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/llayout_commentlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="3dp">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/iv_writerprofile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:civ_border_width="1dp"/>
+
+            <com.victor.loading.rotate.RotateLoading
+                android:id="@+id/item_rotateloading"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:loading_color="#4FC9DE"
+                app:loading_speed="11"
+                app:loading_width="2dp" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_margin="3dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_commentlist_writer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_gravity="center"
+                android:textColor="#4FC9DE"
+                android:textSize="13dp"
+                android:ellipsize="end"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_margin="3dp"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_commentlist_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_gravity="left"
+                android:textColor="#000000"
+                android:textSize="11dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

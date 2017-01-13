@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="설정 변경" />
+        <item
+            android:id="@+id/nav_apkinfo"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="APK 정보" />
+        <item
+            android:id="@+id/nav_cpptest"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="NDK 테스트" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="로그아웃" />
+    </group>
+
+    <!--
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+        </menu>
+    </item>
+
+    -->
+
+</menu>

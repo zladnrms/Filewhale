@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Filewhale</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_app_main_drawer">App_main_drawer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_app_main">App_main</string>
+    <string name="gllogin_loading">loading</string>
+    <string name="gllogin_signed_out">signed_out</string>
+    <string name="gllogin_signed_in_fmt">LoginTest</string>
+</resources>

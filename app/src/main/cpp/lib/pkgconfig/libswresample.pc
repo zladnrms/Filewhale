@@ -1,0 +1,14 @@
+prefix=D:/Develop/adt-bundle-windows-x86_64-20140702/sdk/ndk-r9b/sources/ffmpeg-3.0/android
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libswresample
+Description: FFmpeg audio resampling library
+Version: 2.0.101
+Requires: 
+Requires.private: libavutil >= 55.17.103
+Conflicts:
+Libs: -L${libdir}  -lswresample 
+Libs.private: -lm
+Cflags: -I${includedir}

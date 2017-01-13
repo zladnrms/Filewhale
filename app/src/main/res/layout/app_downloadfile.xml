@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 어플 키자마자 EditText Focus를 막음-->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- 툴바 -->
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="@style/Toolbar">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <!-- 게시물 제목 -->
+                    <TextView
+                        android:id="@+id/tv_filesubject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:gravity="left|center"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:maxLines="1"
+                        android:textColor="#ffffff"
+                        android:textSize="24dp" />
+
+                    <Button
+                        android:id="@+id/btn_download"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="다운로드"
+                        android:textColor="#000000"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center">
+
+                    <!-- 파일 미리보기 기능 -->
+
+                    <ImageView
+                        android:id="@+id/iv_filethumbnail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center" />
+
+                    <Button
+                        android:id="@+id/btn_see"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="#77000000"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="영상 미리보기"
+                        android:textColor="#ffffff"
+                        android:textSize="18dp" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <!-- 파일 정보 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal">
+
+                    <!-- 파일 분류 -->
+                    <TextView
+                        android:id="@+id/tv_filecategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#A6A6A6"
+                        android:textSize="17dp" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_weight="1" />
+
+                    <!-- 파일 상태 -->
+                    <TextView
+                        android:id="@+id/tv_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#A6A6A6"
+                        android:textSize="15dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal">
+
+                    <!-- 파일 이름 -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/tv_filename"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:ellipsize="end"
+                            android:textColor="#5D5D5D"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!-- 파일 용량 -->
+                    <TextView
+                        android:id="@+id/tv_filesize"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="#A6A6A6"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="4dp"
+                android:background="#EDEDED" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+
+                <Button
+                    android:id="@+id/btn_del"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="삭제"
+                    android:textSize="12dp"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="4dp"
+                android:background="#EDEDED" />
+
+            <!-- 파일 설명 -->
+            <LinearLayout
+                android:id="@+id/llayout_filecontent"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_margin="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_filecontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="9"
+                    android:textColor="#000000"
+                    android:textSize="13dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:gravity="center"
+                    android:background="#33000000">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/ic_dots" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="4dp"
+                android:background="#EDEDED" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/iv_comment_profile"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/ic_profile"
+                    app:civ_border_width="1dp" />
+
+                <TextView
+                    android:id="@+id/tv_alert_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="해당 파일을 다운로드 받은 내역이 있어야 평점 및 댓글이 가능합니다"
+                    android:textColor="#9E9E9E"
+                    android:textSize="13dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/llayout_starnum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:orientation="horizontal"
+                        android:weightSum="5">
+
+                        <ImageView
+                            android:id="@+id/iv_star_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/star_blank" />
+
+                        <ImageView
+                            android:id="@+id/iv_star_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/star_blank" />
+
+                        <ImageView
+                            android:id="@+id/iv_star_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/star_blank" />
+
+                        <ImageView
+                            android:id="@+id/iv_star_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/star_blank" />
+
+                        <ImageView
+                            android:id="@+id/iv_star_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:src="@drawable/star_blank" />
+
+                    </LinearLayout>
+
+                    <!-- 게시물 전체 평점 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal">
+
+                        <!-- 평점 (더블형) -->
+                        <TextView
+                            android:id="@+id/tv_starnum"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textSize="60dp"
+                            android:textStyle="bold" />
+
+                        <!-- 평점 매긴 사람 수 -->
+                        <LinearLayout
+                            android:layout_width="100dp"
+                            android:layout_height="60dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center|bottom"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_rcmdcount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="2dp"
+                                android:text="0"
+                                android:textSize="13dp" />
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:src="@drawable/ic_profile" />
+
+                        </LinearLayout>
+
+                        <!-- 평점 그래프 -->
+                        <LinearLayout
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="12dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:text="5"
+                                    android:textSize="9dp" />
+
+                                <filewhalewebhard.defytech.wmqkem.filewhalewebhard.customview.GraphView
+                                    android:id="@+id/gv_five"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginLeft="2dp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="12dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="4"
+                                    android:textSize="9dp"
+                                    android:layout_gravity="center"/>
+
+                                <filewhalewebhard.defytech.wmqkem.filewhalewebhard.customview.GraphView
+                                    android:id="@+id/gv_four"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginLeft="2dp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="12dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="3"
+                                    android:textSize="9dp"
+                                    android:layout_gravity="center"/>
+
+                                <filewhalewebhard.defytech.wmqkem.filewhalewebhard.customview.GraphView
+                                    android:id="@+id/gv_three"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginLeft="2dp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="12dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="2"
+                                    android:textSize="9dp"
+                                    android:layout_gravity="center"/>
+
+                                <filewhalewebhard.defytech.wmqkem.filewhalewebhard.customview.GraphView
+                                    android:id="@+id/gv_two"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginLeft="2dp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="12dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:text="1"
+                                    android:textSize="9dp"
+                                    android:layout_gravity="center"/>
+
+                                <filewhalewebhard.defytech.wmqkem.filewhalewebhard.customview.GraphView
+                                    android:id="@+id/gv_one"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginLeft="2dp"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llayout_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <EditText
+                            android:id="@+id/et_comment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="80dp"
+                            android:layout_weight="1"
+                            android:maxLines="1"
+                            android:gravity="top" />
+
+                        <FrameLayout
+                            android:layout_width="70dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center">
+
+                            <Button
+                                android:id="@+id/btn_comment"
+                                android:layout_width="70dp"
+                                android:layout_height="80dp"
+                                android:text="작 성" />
+
+                            <com.victor.loading.rotate.RotateLoading
+                                android:id="@+id/rotateloading_inBtn"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="center"
+                                app:loading_color="#4FC9DE"
+                                app:loading_speed="11"
+                                app:loading_width="3dp" />
+
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="4dp"
+                android:background="#EDEDED" />
+
+            <ListView
+                android:id="@+id/lv_commentlist"
+                android:layout_width="match_parent"
+                android:layout_height="162dp"
+                android:dividerHeight="2dp"
+                android:divider="#FFFFFF"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Loading Progress바-->
+    <LinearLayout
+        android:id="@+id/llayout_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#40000000"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.victor.loading.rotate.RotateLoading
+            android:id="@+id/rotateloading"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:loading_speed="11"
+            app:loading_width="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="파일 정보를 받아오는 중입니다"
+            android:textColor="#ffffff"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="잠시 기다려주세요.."
+            android:textColor="#ffffff"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+</FrameLayout>

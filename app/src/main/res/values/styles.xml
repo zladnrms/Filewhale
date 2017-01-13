@@ -1,0 +1,32 @@
+<resources>
+
+    <!-- 액션바 없음 -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+
+    <!-- 액션바 없음 -->
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">#7fb0ca</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:background">#7fb0ca</item>
+    </style>
+
+    <!-- 툴바 스타일링 -->
+    <style name="Toolbar" parent="Base.Widget.AppCompat.Toolbar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="android:background">#7fb0ca</item>
+        <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
+    </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:background">#ffffff</item>
+    </style>
+</resources>

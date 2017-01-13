@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="filewhalewebhard.defytech.wmqkem.filewhalewebhard">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_app"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".user.App_login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".etc.App_blog" />
+        <activity android:name=".App_cpptest" />
+        <activity android:name=".viewer.App_imgviewer" />
+        <activity android:name=".user.App_join" />
+        <activity android:name=".filejob.App_uploadfile" />
+        <activity android:name=".App_uploadfile_ffmpegtest" />
+        <activity android:name=".viewer.App_videoviewer" />
+        <activity
+            android:name=".main.App_main"
+            android:label="@string/title_activity_app_main"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".filejob.App_downloadfile" />
+        <activity android:name=".viewer.App_audioviewer" />
+        <activity android:name=".etc.App_filecontentdetail" />
+        <activity android:name=".etc.App_searchresult" />
+        <activity android:name=".etc.App_userinfo" />
+        <activity android:name=".user.App_joinnick" />
+        <activity android:name=".App_test"></activity>
+    </application>
+
+</manifest>
