@@ -72,10 +72,8 @@ public class App_downloadfile extends AppCompatActivity {
     LinearLayout llayout_filecontent;
     TextView tv_filesubject;
     TextView tv_filecontent;
-    TextView tv_filename;
-    TextView tv_filecategory;
     TextView tv_filesize;
-    TextView tv_state;
+    TextView tv_date;
     ImageView iv_filethumbnail;
 
     // 다운로드 버튼
@@ -107,12 +105,9 @@ public class App_downloadfile extends AppCompatActivity {
     private String userNick = null;
 
     // 댓글 및 평점
-    TextView tv_alert_comment, tv_starnum, tv_rcmdcount;
+    TextView tv_alert_comment;
     LinearLayout llayout_comment, llayout_starnum;
     CircularImageView iv_comment_profile;
-    double inst_starNum = 0.0;
-    ImageView iv_star1, iv_star2, iv_star3, iv_star4, iv_star5;
-    private double rcmd_starNum = 0.0, rcmd_originstarNum;
     EditText et_comment;
     Button btn_comment;
     RotateLoading rotateLoading_inBtn;
@@ -159,10 +154,8 @@ public class App_downloadfile extends AppCompatActivity {
         llayout_filecontent = (LinearLayout) findViewById(R.id.llayout_filecontent);
         tv_filesubject = (TextView) findViewById(R.id.tv_filesubject);
         tv_filecontent = (TextView) findViewById(R.id.tv_filecontent);
-        tv_filename = (TextView) findViewById(R.id.tv_filename);
-        tv_filecategory = (TextView) findViewById(R.id.tv_filecategory);
         tv_filesize = (TextView) findViewById(R.id.tv_filesize);
-        tv_state = (TextView) findViewById(R.id.tv_state);
+        tv_date = (TextView) findViewById(R.id.tv_date);
         iv_filethumbnail = (ImageView) findViewById(R.id.iv_filethumbnail);
         llayout_progress = (LinearLayout) findViewById(R.id.llayout_progress);
         btn_download = (Button) findViewById(R.id.btn_download);
@@ -170,18 +163,9 @@ public class App_downloadfile extends AppCompatActivity {
         btn_del = (Button) findViewById(R.id.btn_del);
         scrollview = (ScrollView) findViewById(R.id.scrollview);
         llayout_comment = (LinearLayout) findViewById(R.id.llayout_comment);
-        llayout_starnum = (LinearLayout) findViewById(R.id.llayout_starnum);
         tv_alert_comment = (TextView) findViewById(R.id.tv_alert_comment);
-        iv_comment_profile = (CircularImageView) findViewById(R.id.iv_comment_profile);
         et_comment = (EditText) findViewById(R.id.et_comment);
         btn_comment = (Button) findViewById(R.id.btn_comment);
-        tv_starnum = (TextView) findViewById(R.id.tv_starnum);
-        tv_rcmdcount = (TextView) findViewById(R.id.tv_rcmdcount);
-        iv_star1 = (ImageView) findViewById(R.id.iv_star_1);
-        iv_star2 = (ImageView) findViewById(R.id.iv_star_2);
-        iv_star3 = (ImageView) findViewById(R.id.iv_star_3);
-        iv_star4 = (ImageView) findViewById(R.id.iv_star_4);
-        iv_star5 = (ImageView) findViewById(R.id.iv_star_5);
         rotateLoading = (RotateLoading) findViewById(R.id.rotateloading);
         rotateLoading_inBtn = (RotateLoading) findViewById(R.id.rotateloading_inBtn);
 
@@ -190,49 +174,10 @@ public class App_downloadfile extends AppCompatActivity {
 
         new getArticle().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR); // 파일 정보 가져오기
 
-        // 댓글란 유저 프로필 설정
-        if (App_main.bm_profile != null) {
-            iv_comment_profile.setImageBitmap(App_main.bm_profile);
-        }
-
-        // 평점 매기기 부분
-        iv_star1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog(1.0);
-            }
-        });
-        iv_star2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog(2.0);
-            }
-        });
-        iv_star3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog(3.0);
-            }
-        });
-        iv_star4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog(4.0);
-            }
-        });
-        iv_star5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog(5.0);
-            }
-        });
-
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (rcmd_starNum == 0.0 && !userNick.equals(pwriter)) {
-                    Toast.makeText(App_downloadfile.this, "평점을 매기셔야 댓글을 남기실 수 있습니다.", Toast.LENGTH_SHORT).show();
-                } else if (et_comment.getText().toString().equals("")) {
+               if (et_comment.getText().toString().equals("")) {
                     Toast.makeText(App_downloadfile.this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 } else {
                     new putComment().execute();
@@ -256,7 +201,6 @@ public class App_downloadfile extends AppCompatActivity {
         // 게시물에 대한 회원 정보 확인 처리
         getDownlist(); // 다운로드 내역 가져오기
         new getRecommendList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR); // 게시물의 추천 목록 가져와서 회원의 내역이 있나 확인
-        new getRecommendCount().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         btn_download.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -338,14 +282,6 @@ public class App_downloadfile extends AppCompatActivity {
             builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
-                    if (rcmd_starNum == 0.0) {
-                        inst_starNum = starNum;
-                        new putRecommend().execute("put"); // 평점 넣기
-                    } else {
-                        inst_starNum = starNum;
-                        rcmd_originstarNum = rcmd_starNum; // 기존 평점을 저장
-                        new putRecommend().execute("update"); // 평점 재설정
-                    }
 
                 }
             });
@@ -447,7 +383,7 @@ public class App_downloadfile extends AppCompatActivity {
                     for (int i = 0; i < jarray.length(); i++) {
                         JSONObject obj = jarray.getJSONObject(i);
 
-                        String writer = null, _id = null, subject = null, filename = null, filecategory = null, state = null, filecontent = null;
+                        String writer = null, _id = null, subject = null, filename = null, filecategory = null, date = null, filecontent = null;
                         double starNum = 0.0;
                         long filesize = 0;
 
@@ -475,12 +411,8 @@ public class App_downloadfile extends AppCompatActivity {
                         if (!obj.isNull("filecontent")) {
                             filecontent = obj.getString("filecontent");
                         }
-                        if (!obj.isNull("starNum")) {
-                            starNum = Double.valueOf(obj.getString("starNum"));
-                            tv_starnum.setText(obj.getString("starNum"));
-                        }
-                        if (!obj.isNull("state")) {
-                            state = obj.getString("state");
+                        if (!obj.isNull("date")) {
+                            date = obj.getString("date");
                         }
                         if (!obj.isNull("filesize")) {
                             filesize = obj.getLong("filesize");
@@ -490,7 +422,7 @@ public class App_downloadfile extends AppCompatActivity {
                             str_getComment = obj.getString("comments");
                         }
 
-                        ArticleInfo articleInfo = new ArticleInfo(_id, writer, subject, filename, filecategory, filecontent, filesize, starNum, state);
+                        ArticleInfo articleInfo = new ArticleInfo(_id, writer, subject, filename, filecategory, filecontent, filesize, starNum, date);
                         setInfo(articleInfo);
 
                         if (str_getComment != null) {
@@ -513,13 +445,11 @@ public class App_downloadfile extends AppCompatActivity {
         pfilecontent = mInfo.getFilecontent();
         pfilesize = setfileUnit(mInfo.getFilesize());
 
-        tv_filecategory.setText(pfilecategory);
-        tv_filename.setText(pfilename);
         tv_filesubject.setText(pfilesubject);
         tv_filesubject.setSelected(true);
         tv_filesize.setText(pfilesize);
         tv_filecontent.setText(pfilecontent);
-        tv_state.setText(mInfo.getState());
+        tv_date.setText(mInfo.getDate());
 
         setCategoryKorToEng(pfilecategory);
 
@@ -671,9 +601,9 @@ public class App_downloadfile extends AppCompatActivity {
         private String filecontent;
         private long filesize;
         private double starNum;
-        private String state; // 업로드된 파일의 상태 (live, expire)
+        private String date;
 
-        public ArticleInfo(String id, String _writer, String _subject, String _filename, String _filecategory, String _filecontent, long _filesize, double _starNum, String _state) {
+        public ArticleInfo(String id, String _writer, String _subject, String _filename, String _filecategory, String _filecontent, long _filesize, double _starNum, String _date) {
             this._id = id;
             this.writer = _writer;
             this.subject = _subject;
@@ -682,7 +612,7 @@ public class App_downloadfile extends AppCompatActivity {
             this.filecontent = _filecontent;
             this.filesize = _filesize;
             this.starNum = _starNum;
-            this.state = _state;
+            this.date = _date;
         }
 
         public String getId() {
@@ -717,8 +647,8 @@ public class App_downloadfile extends AppCompatActivity {
             return starNum;
         }
 
-        public String getState() {
-            return state;
+        public String getDate() {
+            return date;
         }
     }
 
@@ -962,269 +892,12 @@ public class App_downloadfile extends AppCompatActivity {
                             if (userNick.equals(obj.getString("userNick"))) {
                                 alreadyrcmd = true;
 
-                                if (!obj.isNull("starNum")) {
-                                    System.out.println("평점 : " + obj.getString("starNum"));
-                                    rcmd_starNum = Double.valueOf(obj.getString("starNum"));
-                                    setStarView(rcmd_starNum);
-                                }
                             }
                         }
                     }
                 } catch (JSONException e) {
                     System.out.println("JSONException : " + e);
                 }
-            }
-        }
-    }
-
-    void setStarView(double starNum) { // 액티비티 평점View 세팅
-        if (starNum == 1.0) {
-            iv_star1.setImageResource(R.drawable.star_fill);
-            iv_star2.setImageResource(R.drawable.star_blank);
-            iv_star3.setImageResource(R.drawable.star_blank);
-            iv_star4.setImageResource(R.drawable.star_blank);
-            iv_star5.setImageResource(R.drawable.star_blank);
-            rcmd_starNum = 1.0;
-        } else if (starNum == 2.0) {
-            iv_star1.setImageResource(R.drawable.star_fill);
-            iv_star2.setImageResource(R.drawable.star_fill);
-            iv_star3.setImageResource(R.drawable.star_blank);
-            iv_star4.setImageResource(R.drawable.star_blank);
-            iv_star5.setImageResource(R.drawable.star_blank);
-            rcmd_starNum = 2.0;
-        } else if (starNum == 3.0) {
-            iv_star1.setImageResource(R.drawable.star_fill);
-            iv_star2.setImageResource(R.drawable.star_fill);
-            iv_star3.setImageResource(R.drawable.star_fill);
-            iv_star4.setImageResource(R.drawable.star_blank);
-            iv_star5.setImageResource(R.drawable.star_blank);
-            rcmd_starNum = 3.0;
-        } else if (starNum == 4.0) {
-            iv_star1.setImageResource(R.drawable.star_fill);
-            iv_star2.setImageResource(R.drawable.star_fill);
-            iv_star3.setImageResource(R.drawable.star_fill);
-            iv_star4.setImageResource(R.drawable.star_fill);
-            iv_star5.setImageResource(R.drawable.star_blank);
-            rcmd_starNum = 4.0;
-        } else if (starNum == 5.0) {
-            iv_star1.setImageResource(R.drawable.star_fill);
-            iv_star2.setImageResource(R.drawable.star_fill);
-            iv_star3.setImageResource(R.drawable.star_fill);
-            iv_star4.setImageResource(R.drawable.star_fill);
-            iv_star5.setImageResource(R.drawable.star_fill);
-            rcmd_starNum = 5.0;
-        }
-    }
-
-    // 게시물 평점 갯수 가져오기 처리 시작 -----------------------------------------------------------//
-    private class getRecommendCount extends AsyncTask<Void, Void, String> { // 불러오기
-
-        @Override
-        protected String doInBackground(Void... kinds) {
-
-            try {
-                URL url = new URL(URLlink + "/android/filecnt/get_rcmdcount.php");
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                if (conn != null) {
-                    conn.setConnectTimeout(10000);
-                    conn.setUseCaches(false);
-                    conn.setDoInput(true);
-                    conn.setDoOutput(true);
-                    conn.setRequestMethod("POST");
-                    conn.setInstanceFollowRedirects(false); // 추가됨
-                    conn.setRequestProperty("content-type", "application/x-www-form-urlencoded");
-
-                    StringBuffer buffer = new StringBuffer();
-                    buffer.append("fileindex").append("=").append(_id);
-
-                    OutputStreamWriter outStream = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-                    PrintWriter writer = new PrintWriter(outStream);
-                    writer.write(buffer.toString());
-                    writer.flush();
-
-                    // 보내기  &&  받기
-                    //헤더 받는 부분
-
-                    InputStreamReader tmp = new InputStreamReader(conn.getInputStream(), "UTF-8");
-                    BufferedReader reader = new BufferedReader(tmp);
-                    StringBuilder builder = new StringBuilder();
-                    String json;
-                    while ((json = reader.readLine()) != null) {       // 서버에서 라인단위로 보내줄 것이므로 라인단위로 읽는다
-                        builder.append(json + "\n");
-                    }
-
-                    return builder.toString().trim();
-                }
-
-            } catch (final Exception e) {
-
-                System.out.println("Error: " + e.getMessage());
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            JSONArray jsonArray = new JSONArray();
-
-            try {
-                JSONObject jsonObj = new JSONObject(result);
-                jsonArray = jsonObj.getJSONArray("result");
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject c = jsonArray.getJSONObject(i);
-
-                    int total, countOne, countTwo, countThree, countFour, countFive;
-
-                    if (!c.isNull("starNum")) {
-                        tv_starnum.setText(c.getString("starNum"));
-                    }
-
-                    if (!c.isNull("total")) {
-                        total = Integer.valueOf(c.getString("total"));
-                        tv_rcmdcount.setText(c.getString("total"));
-
-                        if (!c.isNull("one")) {
-                            countOne = Integer.valueOf(c.getString("one"));
-                            double part = countOne / (double) total;
-                            GraphView graphView = graphView = (GraphView) findViewById(R.id.gv_one);
-                            graphView.setColor("#FFA648");
-                            graphView.setWidth(part);
-                        }
-                        if (!c.isNull("two")) {
-                            countTwo = Integer.valueOf(c.getString("two"));
-                            double part = countTwo / (double) total;
-                            GraphView graphView = (GraphView) findViewById(R.id.gv_two);
-                            graphView.setColor("#FFCD12");
-                            graphView.setWidth(part);
-                        }
-                        if (!c.isNull("three")) {
-                            countThree = Integer.valueOf(c.getString("three"));
-                            double part = countThree / (double) total;
-                            GraphView graphView = (GraphView) findViewById(R.id.gv_three);
-                            graphView.setColor("#FFFC80");
-                            graphView.setWidth(part);
-                        }
-                        if (!c.isNull("four")) {
-                            countFour = Integer.valueOf(c.getString("four"));
-                            double part = countFour / (double) total;
-                            GraphView graphView = (GraphView) findViewById(R.id.gv_four);
-                            graphView.setColor("#98F791");
-                            graphView.setWidth(part);
-                        }
-                        if (!c.isNull("five")) {
-                            countFive = Integer.valueOf(c.getString("five"));
-                            double part = countFive / (double) total;
-                            GraphView graphView = (GraphView) findViewById(R.id.gv_five);
-                            graphView.setColor("#47C83E");
-                            graphView.setWidth(part);
-                        }
-                    }
-                }
-
-            } catch (JSONException e) {
-                System.out.println("JSONException : " + e);
-            }
-        }
-    }
-
-    // 평점 처리 시작 -----------------------------------------------------------//
-    private class putRecommend extends AsyncTask<String, Void, String> { // 불러오기
-
-        @Override
-        protected String doInBackground(String... kinds) {
-
-            try {
-                URL url = null;
-
-                if (kinds[0].equals("put")) {
-                    url = new URL(URLlink + "/android/filecnt/put_recommend.php"); // 앨범 폴더의 dbname 폴더에 접근
-                } else if (kinds[0].equals("update")) {
-                    url = new URL(URLlink + "/android/filecnt/update_recommend.php"); // 앨범 폴더의 dbname 폴더에 접근
-                }
-
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                if (conn != null) {
-                    conn.setConnectTimeout(10000);
-                    conn.setUseCaches(false);
-                    conn.setDoInput(true);
-                    conn.setDoOutput(true);
-                    conn.setRequestMethod("POST");
-                    conn.setInstanceFollowRedirects(false); // 추가됨
-                    conn.setRequestProperty("content-type", "application/x-www-form-urlencoded");
-
-                    StringBuffer buffer = new StringBuffer();
-                    buffer.append("fileindex").append("=").append(_id).append("&");
-                    buffer.append("userNick").append("=").append(userNick).append("&");
-                    if (kinds[0].equals("update")) {
-                        buffer.append("originstarNum").append("=").append(rcmd_originstarNum).append("&");
-                    }
-                    buffer.append("starNum").append("=").append(inst_starNum);
-
-                    OutputStreamWriter outStream = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-                    PrintWriter writer = new PrintWriter(outStream);
-                    writer.write(buffer.toString());
-                    writer.flush();
-
-                    // 보내기  &&  받기
-                    //헤더 받는 부분
-
-                    InputStreamReader tmp = new InputStreamReader(conn.getInputStream(), "UTF-8");
-                    BufferedReader reader = new BufferedReader(tmp);
-                    StringBuilder builder = new StringBuilder();
-                    String json;
-                    while ((json = reader.readLine()) != null) {       // 서버에서 라인단위로 보내줄 것이므로 라인단위로 읽는다
-                        builder.append(json + "\n");
-                        System.out.println(json);
-                    }
-
-                    return builder.toString().trim();
-                }
-
-            } catch (final Exception e) {
-
-                System.out.println("Error: " + e.getMessage());
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            JSONArray jsonArray;
-
-            try {
-                JSONObject jsonObj = new JSONObject(result);
-                jsonArray = jsonObj.getJSONArray("result");
-
-                for (int i = 0; i < jarray.length(); i++) {
-                    JSONObject c = jsonArray.getJSONObject(i);
-
-                    if (!c.isNull("error")) {
-                        String error = c.getString("error");
-
-                        switch (error) {
-                            case "01":
-                                Toast.makeText(App_downloadfile.this, "모든 값이 전달 되지 않음(Error : 01)", Toast.LENGTH_SHORT).show();
-                                break;
-                            case "02":
-                                Toast.makeText(App_downloadfile.this, "평점을 매기신지 24시간이 되지 않았습니다", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                    } else {
-                        setStarView(inst_starNum);
-                        new getRecommendCount().execute();
-                    }
-                }
-
-            } catch (JSONException e) {
-                System.out.println("JSONException : " + e);
             }
         }
     }
@@ -1330,7 +1003,7 @@ public class App_downloadfile extends AppCompatActivity {
 
     // 댓글 받아오기 처리 시작 ----------------------------------------------------------------//
 
-    // 게시물 받아오기
+    // 댓글 받아오기
     void GetCommentList(String commentList) {
 
         try {

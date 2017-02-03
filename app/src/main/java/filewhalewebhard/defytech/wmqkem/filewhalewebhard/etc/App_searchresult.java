@@ -356,8 +356,6 @@ public class App_searchresult extends AppCompatActivity {
                 ViewHolder holder = new ViewHolder();
                 holder.subject = (TextView) v.findViewById(R.id.tv_mainlist_subject);
                 holder.filename = (TextView) v.findViewById(R.id.tv_mainlist_filename);
-                holder.filesize = (TextView) v.findViewById(R.id.tv_mainlist_size);
-                holder.starnum = (TextView) v.findViewById(R.id.tv_mainlist_starnum);
                 holder.date = (TextView) v.findViewById(R.id.tv_mainlist_date);
                 holder.writerprofile = (CircularImageView) v.findViewById(R.id.iv_writerprofile);
                 holder.item_rotateLoading = (RotateLoading) v.findViewById(R.id.item_rotateloading);

@@ -19,7 +19,8 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".user.App_login">
+        <activity android:name=".user.App_login"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,14 +31,16 @@
         <activity android:name=".App_cpptest" />
         <activity android:name=".viewer.App_imgviewer" />
         <activity android:name=".user.App_join" />
-        <activity android:name=".filejob.App_uploadfile" />
+        <activity android:name=".filejob.App_uploadfile"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".App_uploadfile_ffmpegtest" />
         <activity android:name=".viewer.App_videoviewer" />
         <activity
             android:name=".main.App_main"
-            android:label="@string/title_activity_app_main"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme" />
-        <activity android:name=".filejob.App_downloadfile" />
+        <activity android:name=".filejob.App_downloadfile"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".viewer.App_audioviewer" />
         <activity android:name=".etc.App_filecontentdetail" />
         <activity android:name=".etc.App_searchresult" />

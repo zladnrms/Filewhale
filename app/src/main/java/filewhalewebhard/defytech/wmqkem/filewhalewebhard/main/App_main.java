@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -27,7 +28,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -98,6 +101,14 @@ public class App_main extends AppCompatActivity
     public static Bitmap bm_profile; // 유저 프로필 전역변수, 어플 내 로그인 유저에 대한 프로필 사용은 이 Bitmap 변수 사용
 
     private RotateLoading rotateLoading;
+
+    // Navigation Menu
+    LinearLayout llayout_drawer_music, llayout_drawer_music_low, llayout_drawer_ani, llayout_drawer_ani_low;
+    ImageView iv_music, iv_ani;
+    boolean open_music = false, open_ani = false;
+
+    // Navigation Button
+    Button btn_notice, btn_version, btn_setting, btn_logout;
 
     // 구글 로그인
     private Boolean GOOGLELOGIN = false;
@@ -171,7 +182,6 @@ public class App_main extends AppCompatActivity
             }
         });
 
-
         // FAB Menu
         final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.fab_menu);
 
@@ -188,6 +198,8 @@ public class App_main extends AppCompatActivity
         rotateLoading = (RotateLoading) hView.findViewById(R.id.rotateloading);
         TextView nav_user = (TextView) hView.findViewById(R.id.tv_drawerheader_nickname);
         nav_user.setText(userNick); // 사용자 닉네임 Set
+        TextView nav_myinfo = (TextView) hView.findViewById(R.id.tv_drawerheader_myinfo);
+        nav_myinfo.setPaintFlags(nav_myinfo.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
         iv_profile = (ImageView) hView.findViewById(R.id.iv_drawerheader_profile);
         iv_profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,6 +212,61 @@ public class App_main extends AppCompatActivity
         });
         navigationView.setNavigationItemSelectedListener(this);
 
+        btn_notice = (Button) findViewById(R.id.btn_notice);
+        btn_version = (Button) findViewById(R.id.btn_version);
+        btn_setting = (Button) findViewById(R.id.btn_setting);
+        btn_logout = (Button) findViewById(R.id.btn_logout);
+
+        btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(GOOGLELOGIN) {
+                    signOut();
+                } else {
+                    loginSqlHelper.delete(); // 자동 로그인 해제
+                    Intent intent = new Intent(App_main.this, App_login.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+
+        llayout_drawer_music = (LinearLayout) hView.findViewById(R.id.llayout_drawer_music);
+        llayout_drawer_music_low = (LinearLayout) hView.findViewById(R.id.llayout_drawer_music_low);
+        llayout_drawer_ani = (LinearLayout) hView.findViewById(R.id.llayout_drawer_ani);
+        llayout_drawer_ani_low = (LinearLayout) hView.findViewById(R.id.llayout_drawer_ani_low);
+        iv_music = (ImageView) hView.findViewById(R.id.iv_music);
+        iv_ani = (ImageView) hView.findViewById(R.id.iv_ani);
+
+        llayout_drawer_music.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(open_music) {
+                    iv_music.setImageResource(R.drawable.ic_plus);
+                    open_music = false;
+                    llayout_drawer_music_low.setVisibility(View.GONE);
+                } else {
+                    iv_music.setImageResource(R.drawable.ic_minus);
+                    open_music = true;
+                    llayout_drawer_music_low.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        llayout_drawer_ani.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(open_ani) {
+                    iv_ani.setImageResource(R.drawable.ic_plus);
+                    open_ani = false;
+                    llayout_drawer_ani_low.setVisibility(View.GONE);
+                } else {
+                    iv_ani.setImageResource(R.drawable.ic_minus);
+                    open_ani = true;
+                    llayout_drawer_ani_low.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         /*
          * 다운로드 페이지에서 메인으로 넘어와 다운로드를 실행하게 됨
          * 다운로드 내역으로 Fragment를 넘기며(setCurrentItem(1))

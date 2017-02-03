@@ -2,7 +2,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical">
+
+    <!-- 화면 키자마자 EditText Focus를 막음-->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,6 +31,16 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="파일 업로드"
+                    android:textColor="#ffffff"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
                 <View
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
@@ -30,10 +48,10 @@
 
                 <Button
                     android:id="@+id/btn_submit"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginRight="20dp"
-                    android:background="@drawable/ic_submit" />
+                    android:background="@drawable/ic_write" />
 
             </LinearLayout>
 
@@ -46,36 +64,80 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="15dp"
                 android:orientation="vertical">
 
+                <!--분류 스피너-->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
 
                     <Spinner
                         android:id="@+id/sp_category_major"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp" />
 
                     <Spinner
                         android:id="@+id/sp_category_minor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"/>
+                        android:layout_marginLeft="15dp"
+                        android:visibility="gone" />
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#CFCFCF" />
 
                 <EditText
                     android:id="@+id/et_upload_subject"
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="13dp"
+                    android:background="#ffffff"
                     android:hint="제목"
-                    android:singleLine="true" />
+                    android:maxLines="1"
+                    android:textColor="#000000"
+                    android:textColorHint="#515151"
+                    android:textSize="17dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#CFCFCF" />
+
+                <EditText
+                    android:id="@+id/et_upload_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="3dp"
+                    android:background="#ffffff"
+                    android:gravity="top"
+                    android:hint="파일 설명"
+                    android:textColor="#000000"
+                    android:textColorHint="#515151"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#CFCFCF" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -84,14 +146,15 @@
                         android:layout_height="120dp"
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:src="@drawable/img_fileview"/>
 
                     <Button
                         android:id="@+id/btn_fileselect"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_gravity="center"
-                        android:background="@drawable/ic_plusfile" />
+                        android:background="@drawable/btn_addfile" />
 
                 </LinearLayout>
 
@@ -104,27 +167,32 @@
                         android:id="@+id/btn_audioencodesetting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="음악 미리듣기 설정"
                         android:layout_weight="1"
-                        android:visibility="gone"/>
+                        android:text="음악 미리듣기 설정"
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/btn_videoencodesetting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="영상 미리보기 설정"
                         android:layout_weight="1"
-                        android:visibility="gone"/>
+                        android:text="영상 미리보기 설정"
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/btn_thumbnailsetting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="영상 썸네일 설정"
                         android:layout_weight="1"
-                        android:visibility="gone"/>
+                        android:text="영상 썸네일 설정"
+                        android:visibility="gone" />
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#CFCFCF" />
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -134,27 +202,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_gravity="center"
+                        android:layout_margin="30dp"
                         android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginBottom="3dp"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginBottom="4dp"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="파일 이름 : "
+                                android:text="파일 이름"
                                 android:textSize="16dp" />
 
                             <TextView
                                 android:id="@+id/tv_filename"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
                                 android:text=""
-                                android:textColor="#000000"
                                 android:textSize="16dp" />
 
                         </LinearLayout>
@@ -162,22 +230,22 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginBottom="3dp"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginTop="4dp"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="파일 용량 : "
+                                android:text="파일 용량"
                                 android:textSize="16dp" />
 
                             <TextView
                                 android:id="@+id/tv_filesize"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
                                 android:text=""
-                                android:textColor="#000000"
                                 android:textSize="16dp" />
 
                         </LinearLayout>
@@ -185,22 +253,21 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginBottom="3dp"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="4dp"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="파일 경로 : "
+                                android:text="파일 경로"
                                 android:textSize="16dp" />
 
                             <TextView
                                 android:id="@+id/tv_filepath"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
                                 android:text=""
-                                android:textColor="#000000"
                                 android:textSize="16dp" />
 
                         </LinearLayout>
@@ -208,15 +275,6 @@
                     </LinearLayout>
 
                 </ScrollView>
-
-                <EditText
-                    android:id="@+id/et_upload_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="240dp"
-                    android:gravity="top"
-                    android:hint="파일 설명"
-                    android:textColor="#000000"
-                    android:textSize="13dp" />
 
             </LinearLayout>
 

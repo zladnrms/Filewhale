@@ -26,6 +26,7 @@ import com.victor.loading.rotate.RotateLoading;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -268,8 +269,6 @@ public class App_home extends Fragment {
                 ViewHolder holder = new ViewHolder();
                 holder.subject = (TextView) v.findViewById(R.id.tv_mainlist_subject);
                 holder.filename = (TextView) v.findViewById(R.id.tv_mainlist_filename);
-                holder.filesize = (TextView) v.findViewById(R.id.tv_mainlist_size);
-                holder.starnum = (TextView) v.findViewById(R.id.tv_mainlist_starnum);
                 holder.date = (TextView) v.findViewById(R.id.tv_mainlist_date);
                 holder.writerprofile = (CircularImageView) v.findViewById(R.id.iv_writerprofile);
                 holder.item_rotateLoading = (RotateLoading) v.findViewById(R.id.item_rotateloading);
@@ -312,7 +311,6 @@ public class App_home extends Fragment {
                         }
                     });
                 }
-
                 if (holder.subject != null) {
                     holder.subject.setText(f_info.getSubject());
                 }
@@ -546,6 +544,7 @@ public class App_home extends Fragment {
 
     static class ViewHolder {
         CircularImageView writerprofile;
+        TextView writer;
         TextView subject;
         TextView filename;
         TextView filesize;

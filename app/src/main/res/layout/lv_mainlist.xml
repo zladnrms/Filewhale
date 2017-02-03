@@ -9,135 +9,62 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="2dp"
+        android:gravity="right"
         android:orientation="horizontal">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_mainlist_date"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_weight="1">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="평점"
-                android:textColor="#000000"
-                android:textSize="16dp"/>
-
-            <TextView
-                android:id="@+id/tv_mainlist_starnum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_mainlist_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:textColor="#000000"
-                android:textSize="17dp"/>
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:maxLines="1"
+            android:textColor="#BDBDBD"
+            android:textSize="12dp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
-        <FrameLayout
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="3dp">
-
-            <com.mikhaellopez.circularimageview.CircularImageView
-                android:id="@+id/iv_writerprofile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:civ_border_width="1dp"/>
-
-            <com.victor.loading.rotate.RotateLoading
-                android:id="@+id/item_rotateloading"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:loading_color="#B2EBF4"
-                app:loading_speed="11"
-                app:loading_width="2dp" />
-
-        </FrameLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_mainlist_subject"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_mainlist_subject"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:layout_gravity="left"
-                android:textColor="#000000"
-                android:textSize="17dp"
-                android:ellipsize="end"/>
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#000000"
+            android:textSize="17dp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="6dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_mainlist_filename"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_margin="3dp">
-
-            <TextView
-                android:id="@+id/tv_mainlist_filename"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:layout_gravity="left"
-                android:textColor="#000000"
-                android:textSize="17dp"
-                android:ellipsize="end"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:layout_margin="3dp">
-
-            <TextView
-                android:id="@+id/tv_mainlist_size"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="12dp"
-                android:textColor="#A6A6A6"
-                android:textStyle="bold"/>
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="#BDBDBD"
+            android:textSize="12dp" />
 
     </LinearLayout>
 
