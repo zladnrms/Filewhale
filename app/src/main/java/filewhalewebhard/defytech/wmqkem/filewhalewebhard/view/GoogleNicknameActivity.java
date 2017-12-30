@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard.user;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -32,7 +32,6 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.main.MainFragment;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 
 public class GoogleNicknameActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{

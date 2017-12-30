@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.Manifest;
 import android.content.Intent;
@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.user.LoginActivity;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 
 public class PermissionActivity extends AppCompatActivity {
 

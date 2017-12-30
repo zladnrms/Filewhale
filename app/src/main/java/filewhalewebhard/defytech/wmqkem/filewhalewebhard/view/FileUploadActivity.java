@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.app.AlertDialog;
 import android.content.ContentUris;

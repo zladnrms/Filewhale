@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard.viewer;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.content.Intent;
 import android.media.AudioManager;
@@ -19,7 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 
-public class App_audioviewer extends AppCompatActivity implements SurfaceHolder.Callback, MediaPlayer.OnErrorListener,MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener,MediaPlayer.OnPreparedListener, MediaController.MediaPlayerControl{
+public class AudioViewerActivity extends AppCompatActivity implements SurfaceHolder.Callback, MediaPlayer.OnErrorListener,MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener,MediaPlayer.OnPreparedListener, MediaController.MediaPlayerControl{
 
     static final String URLlink = "http://115.71.238.61"; // 호스팅 URL
 
@@ -87,7 +87,7 @@ public class App_audioviewer extends AppCompatActivity implements SurfaceHolder.
         if(!covername.equals("")) {
             System.out.println(URLlink + "/android/filestorage/a_coverimg/" + covername);
             Glide.
-                    with(App_audioviewer.this).
+                    with(AudioViewerActivity.this).
                     load(URLlink + "/android/filestorage/a_coverimg/" + covername).
                     fitCenter().
                     diskCacheStrategy(DiskCacheStrategy.NONE).

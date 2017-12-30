@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -44,13 +44,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc.FileDetailActivity;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.main.MainFragment;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.SQLite.DownloadListSQLHelper;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.viewer.App_audioviewer;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.viewer.App_imgviewer;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.viewer.App_videoviewer;
 
 public class FileDownloadActivity extends AppCompatActivity {
 
@@ -216,19 +211,19 @@ public class FileDownloadActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (pfilecategory.matches("비디오_"+".*")) {
-                    Intent intent = new Intent(FileDownloadActivity.this, App_videoviewer.class);
+                    Intent intent = new Intent(FileDownloadActivity.this, VideoViewerActivity.class);
                     intent.putExtra("notcolumnfilename", notColumnFileName);
                     intent.putExtra("filecategory", EngCategory);
                     startActivity(intent);
                 }
                 else if(pfilecategory.matches("이미지_"+".*")){
-                    Intent intent = new Intent(FileDownloadActivity.this, App_imgviewer.class);
+                    Intent intent = new Intent(FileDownloadActivity.this, ImageViewerActivity.class);
                     intent.putExtra("filename", pfilename);
                     intent.putExtra("filecategory", EngCategory);
                     startActivity(intent);
                 }
                 else if(pfilecategory.matches("오디오_"+".*")){
-                    Intent intent = new Intent(FileDownloadActivity.this, App_audioviewer.class);
+                    Intent intent = new Intent(FileDownloadActivity.this, AudioViewerActivity.class);
                     intent.putExtra("filecategory", EngCategory);
                     intent.putExtra("filename", pfilename);
                     intent.putExtra("covername", covername);

@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard.main;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -59,15 +59,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc.SearchResultActivity;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.App_test;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.App_uploadfile_ffmpegtest;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc.UserInfoActivity;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.SQLite.DownloadListSQLHelper;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.SQLite.LoginSQLHelper;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.FileUploadActivity;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.user.LoginActivity;
 
 public class MainFragment extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, TabLayout.OnTabSelectedListener ,GoogleApiClient.OnConnectionFailedListener{

@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard.main;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -40,9 +40,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc.BlogActivity;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.FileDownloadActivity;
 
 public class HomeFragment extends Fragment {
 

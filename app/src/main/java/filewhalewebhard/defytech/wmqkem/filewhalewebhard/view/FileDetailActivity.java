@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

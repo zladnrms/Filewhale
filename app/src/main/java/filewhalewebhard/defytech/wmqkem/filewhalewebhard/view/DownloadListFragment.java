@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard.main;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -47,8 +47,6 @@ import java.util.List;
 
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.SQLite.DownloadListSQLHelper;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.FileDownloadActivity;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.user.LoginActivity;
 
 public class DownloadListFragment extends Fragment {
 

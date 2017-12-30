@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard.main;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.SQLite.UploadListSQLHelper;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.FileDownloadActivity;
 
 public class UploadListFragment extends Fragment {
 

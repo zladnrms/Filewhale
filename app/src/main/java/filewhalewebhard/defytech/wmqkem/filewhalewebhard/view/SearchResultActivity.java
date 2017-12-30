@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,8 +6,12 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -16,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -27,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -38,26 +44,27 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.FileDownloadActivity;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
-public class BlogActivity extends AppCompatActivity {
+public class SearchResultActivity extends AppCompatActivity {
 
+    // Network Connection
     static final String URLlink = "http://115.71.238.61"; // 호스팅 URL
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    OkHttpClient client = new OkHttpClient();
+    private JSONArray jarray = null; //PHP에서 받아온 JSON Array에 대한 처리
 
-    /*
-     * PHP에서 받아온 JSON Array에 대한 처리
-     */
-    private JSONArray jarray = null;
-
-    // WhaleLog 주인 정보
-    String blogMaster;
-    Bitmap bm_profile;
-
-    // WhaleLog 사용 객체
-    TextView tv_nick;
-    CircularImageView iv_blogprofile;
+    // SearchResult 사용 객체
     ListView lv_filelist;
     FilelistAdapter lv_adapter;
+    String searchword;
 
     // 파일 리스트
     ArrayList<ArticleInfo> filelist = new ArrayList<ArticleInfo>();
@@ -65,14 +72,13 @@ public class BlogActivity extends AppCompatActivity {
     private boolean lv_lock = true;
 
     // 파일 List 받아오기 Progress
-    private RotateLoading rotateLoading;
-    private RotateLoading rotateLoading_blog;
+    private RotateLoading rotateLoading_search;
     private LinearLayout llayout_progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_blog);
+        setContentView(R.layout.activity_search_result);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_backarrow);
@@ -83,19 +89,15 @@ public class BlogActivity extends AppCompatActivity {
             }
         });
 
-        tv_nick = (TextView) findViewById(R.id.tv_nick);
-        iv_blogprofile = (CircularImageView) findViewById(R.id.iv_blogprofile);
-        rotateLoading = (RotateLoading) findViewById(R.id.rotateloading);
+
         llayout_progress = (LinearLayout) findViewById(R.id.llayout_progress);
-        rotateLoading_blog = (RotateLoading) findViewById(R.id.rotateloading_blog);
+        rotateLoading_search = (RotateLoading) findViewById(R.id.rotateloading_search);
 
         Intent intent = getIntent();
-        blogMaster = intent.getStringExtra("blogmaster");
+        searchword = intent.getStringExtra("searchword");
 
-        new profileLoad().execute();
-
-        // WhaleLog 주인이 올린 게시글 보여주기
-        lv_filelist = (ListView) findViewById(R.id.lv_blogfilelist);
+        // 검색 결과 보여주기
+        lv_filelist = (ListView) findViewById(R.id.lv_searchfilelist);
         lv_adapter = new FilelistAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, filelist); // 데이터
         ViewGroup footer = (ViewGroup) getLayoutInflater().inflate(R.layout.listview_footer, null);
         lv_filelist.addFooterView(footer);
@@ -112,7 +114,12 @@ public class BlogActivity extends AppCompatActivity {
                 if (firstVisibleItem >= count && totalItemCount != 0 && lv_lock == false) {
                     // 아이템 추가
                     skipnumber += 10;
-                    new GetFileList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    try {
+                        doGetRequest(URLlink + "/android/list/get_searchfilelist.php");
+                    }catch (IOException e){
+
+                    }
+                    //new GetFileList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
             }
         });
@@ -127,56 +134,80 @@ public class BlogActivity extends AppCompatActivity {
                 }
             }
         });
+
+        try {
+            doGetRequest(URLlink + "/android/list/get_searchfilelist.php");
+        }catch (IOException e){
+
+        }
+        //new GetFileList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    // 이미지 가져오기 처리
-    class profileLoad extends AsyncTask<Void, Void, Void> { // 불러오기
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
 
-            llayout_progress.setVisibility(View.VISIBLE);
-            rotateLoading_blog.start();
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.searchview, menu);
 
-        @Override
-        protected Void doInBackground(Void... params) {
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
 
-            try {
-                String url = URLlink + "/android/filestorage/profile/" + "profile_" + blogMaster + ".png";
-
-                bm_profile = Glide.
-                        with(BlogActivity.this).
-                        load(url).
-                        asBitmap().
-                        diskCacheStrategy(DiskCacheStrategy.NONE).
-                        skipMemoryCache(true).
-                        error(R.drawable.ic_profile).
-                        fallback(R.drawable.ic_profile).
-                        placeholder(R.drawable.ic_profile).
-                        into(-1, -1).
-                        get();
-
-            } catch (final Exception e) {
-                e.printStackTrace();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String word) {
+                searchword = word;
+                filelist.clear();
+                skipnumber = 0;
+                new GetFileList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                return false;
             }
-            return null;
-        }
+            @Override
+            public boolean onQueryTextChange(String word) {
+                return false;
+            }
+        });
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        return true;
+    }
 
-            llayout_progress.setVisibility(View.GONE);
-            rotateLoading_blog.stop();
+    void doGetRequest(String url) throws IOException {
 
-            iv_blogprofile.setImageBitmap(bm_profile);
-            tv_nick.setText(blogMaster);
+        //RequestBody body = RequestBody.create(JSON, json);
+        RequestBody body = new FormBody.Builder()
+                .add("searchword", searchword)
+                .add("skipnumber", String.valueOf(skipnumber))
+                .build();
 
-            // 게시물 받아오기
-            new GetFileList().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        }
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+
+        client.newCall(request)
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(final Call call, IOException e) {
+                        // Error
+                        System.out.println("2."+e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(Call call, final Response response) throws IOException {
+                        String res = response.body().string();
+
+                        /*
+                        StringBuilder builder = new StringBuilder();
+                        String json;
+                        while ((json = reader.readLine()) != null) {       // 서버에서 라인단위로 보내줄 것이므로 라인단위로 읽는다
+                            builder.append(json + "\n");
+                            System.out.println("json + " + json);
+                            if (!json.equals("")) {
+                                JSONObject obj = new JSONObject(json);
+                                jarray.put(obj);
+                            }
+                        }
+                        */
+                    }
+                });
     }
 
     // 게시물 받아오기
@@ -187,14 +218,14 @@ public class BlogActivity extends AppCompatActivity {
             super.onPreExecute();
 
             lv_lock = true;
-            rotateLoading.start();
+            rotateLoading_search.start();
         }
 
         @Override
         protected JSONArray doInBackground(Void... params) {
 
             try {
-                URL url = new URL(URLlink + "/android/list/get_blogfilelist.php"); // 앨범 폴더의 dbname 폴더에 접근
+                URL url = new URL(URLlink + "/android/list/get_searchfilelist.php"); // 앨범 폴더의 dbname 폴더에 접근
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 if (conn != null) {
@@ -207,7 +238,7 @@ public class BlogActivity extends AppCompatActivity {
                     conn.setRequestProperty("content-type", "application/x-www-form-urlencoded");
 
                     StringBuffer buffer = new StringBuffer();
-                    buffer.append("blogmaster").append("=").append(blogMaster).append("&"); // 옆의 변수 대로 더 불러옴
+                    buffer.append("searchword").append("=").append(searchword).append("&"); // 옆의 변수 대로 더 불러옴
                     buffer.append("skipnumber").append("=").append(skipnumber); // 옆의 변수 대로 더 불러옴
 
                     OutputStreamWriter outStream = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
@@ -245,8 +276,8 @@ public class BlogActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(JSONArray result) {
 
-            if (rotateLoading.isStart()) {
-                rotateLoading.stop();
+            if (rotateLoading_search.isStart()) {
+                rotateLoading_search.stop();
             }
 
             System.out.println("결과" + result);
@@ -291,6 +322,10 @@ public class BlogActivity extends AppCompatActivity {
                     filelist.add(articleInfo); // 파일 정보 객체를 리스트뷰에 뿌릴 ArrayList에 넣음
                     lv_adapter.notifyDataSetChanged(); // 정보가 바뀌었다는 것을 알림
                     lv_lock = false;
+
+                    if(filelist.size()==0) {
+                        Toast.makeText(SearchResultActivity.this, "검색 결과가 없습니다다", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             } catch (JSONException e) {
@@ -333,7 +368,34 @@ public class BlogActivity extends AppCompatActivity {
                 ViewHolder holder = (ViewHolder) v.getTag();
 
                 if (holder.writerprofile != null) {
-                    holder.writerprofile.setImageBitmap(bm_profile);
+                    if (!f_info.getListed()) {
+                        new getProfile(f_info.getWriter(), holder.writerprofile, holder.item_rotateLoading).execute();
+                        f_info.setListed(true);
+                    }
+
+                    holder.writerprofile.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            PopupMenu pmenu = new PopupMenu(SearchResultActivity.this, v);
+                            getMenuInflater().inflate(R.menu.popup_menu, pmenu.getMenu());
+                            pmenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+                                    switch (item.getItemId()) {
+                                        case R.id.p_whalelog:
+                                            Intent intent = new Intent(SearchResultActivity.this, BlogActivity.class);
+                                            intent.putExtra("blogmaster", f_info.getWriter());
+                                            startActivity(intent);
+                                            break;
+                                        case R.id.p_cancel:
+                                            break;
+                                    }
+                                    return false;
+                                }
+                            });
+                            pmenu.show();
+                        }
+                    });
                 }
 
                 if (holder.subject != null) {
@@ -345,10 +407,10 @@ public class BlogActivity extends AppCompatActivity {
                 if (holder.filesize != null) {
                     holder.filesize.setText(String.valueOf(setfileUnit(f_info.getFilesize())));
                 }
-                if(holder.starnum != null) {
-                    holder.starnum.setText(f_info.getStarnum()+"점");
+                if (holder.starnum != null) {
+                    holder.starnum.setText(f_info.getStarnum() + "점");
                 }
-                if(holder.date != null) {
+                if (holder.date != null) {
                     holder.date.setText(compareTime(nowTime(), f_info.getDate()));
                 }
             }
@@ -439,6 +501,64 @@ public class BlogActivity extends AppCompatActivity {
         return cutNumber;
     }
 
+    // 이미지 가져오기 처리
+    private class getProfile extends AsyncTask<Void, Void, Void> { // 불러오기
+
+        private String userNick = null;
+        private CircularImageView iv_writerprofile = null;
+        private Bitmap bm_profile = null;
+        private RotateLoading item_rotateLoading;
+
+        private getProfile(String _userNick, CircularImageView _iv_writerprofile, RotateLoading _item_rotateLoading) {
+            userNick = _userNick;
+            iv_writerprofile = _iv_writerprofile;
+            item_rotateLoading = _item_rotateLoading;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            item_rotateLoading.start();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                String url = URLlink + "/android/filestorage/profile/" + "profile_" + userNick + ".png";
+                System.out.println(userNick);
+
+                bm_profile = Glide.
+                        with(SearchResultActivity.this).
+                        load(url).
+                        asBitmap().
+                        diskCacheStrategy(DiskCacheStrategy.NONE).
+                        skipMemoryCache(true).
+                        error(R.drawable.ic_profile).
+                        fallback(R.drawable.ic_profile).
+                        placeholder(R.drawable.ic_profile).
+                        into(-1, -1).
+                        get();
+
+            } catch (final Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            if (item_rotateLoading.isStart()) {
+                item_rotateLoading.stop();
+            }
+
+            iv_writerprofile.setImageBitmap(bm_profile);
+        }
+    }
+
     class ArticleInfo { // 게시물 정보 클래스
 
         private String _id;
@@ -450,6 +570,7 @@ public class BlogActivity extends AppCompatActivity {
         private long filesize;
         private String date;
         private String state; // 업로드된 파일의 상태 (live, expire)
+        private Boolean listed = false; // 리스트에 갱신됬었는지 여부
 
         public ArticleInfo(String id, String _writer, String _subject, String _filename, String _filecategory, Double _starnum, long _filesize, String _date, String _state) {
             this._id = id;
@@ -497,6 +618,14 @@ public class BlogActivity extends AppCompatActivity {
 
         public String getState() {
             return state;
+        }
+
+        public Boolean getListed() {
+            return listed;
+        }
+
+        public void setListed(Boolean _bool) {
+            listed = _bool;
         }
     }
 

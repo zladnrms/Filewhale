@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard.viewer;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +13,7 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 
-public class App_imgviewer extends AppCompatActivity {
+public class ImageViewerActivity extends AppCompatActivity {
 
     static final String URLlink = "http://115.71.238.61"; // 호스팅 URL
 
@@ -49,7 +49,7 @@ public class App_imgviewer extends AppCompatActivity {
         // GIF 파일 일 경우 대비
         GlideDrawableImageViewTarget ivTarget = new GlideDrawableImageViewTarget(iv_imageviewer);
         Glide.
-                with(App_imgviewer.this).
+                with(ImageViewerActivity.this).
                 load(URLlink + "/android/filestorage/" + filecategory + "/" + filename).
                 fitCenter().
                 diskCacheStrategy(DiskCacheStrategy.NONE).

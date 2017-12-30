@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard.user;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.os.AsyncTask;
 import android.os.Bundle;

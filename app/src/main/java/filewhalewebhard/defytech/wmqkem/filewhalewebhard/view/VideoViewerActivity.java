@@ -1,4 +1,4 @@
-package filewhalewebhard.defytech.wmqkem.filewhalewebhard.viewer;
+package filewhalewebhard.defytech.wmqkem.filewhalewebhard.view;
 
 import android.content.Intent;
 import android.media.AudioManager;
@@ -15,7 +15,7 @@ import android.widget.MediaController;
 
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 
-public class App_videoviewer extends AppCompatActivity implements SurfaceHolder.Callback, MediaPlayer.OnErrorListener,MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener,
+public class VideoViewerActivity extends AppCompatActivity implements SurfaceHolder.Callback, MediaPlayer.OnErrorListener,MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener,
         MediaPlayer.OnPreparedListener, MediaController.MediaPlayerControl{
 
     Button btn_back;

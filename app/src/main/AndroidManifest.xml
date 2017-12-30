@@ -19,36 +19,36 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PermissionActivity">
+        <activity android:name=".view.PermissionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".etc.BlogActivity" />
+        <activity android:name=".view.BlogActivity" />
         <activity android:name=".App_cpptest" />
-        <activity android:name=".viewer.App_imgviewer" />
-        <activity android:name=".user.JoinActivity" />
+        <activity android:name=".view.ImageViewerActivity" />
+        <activity android:name=".view.JoinActivity" />
         <activity
-            android:name=".filejob.FileUploadActivity"
+            android:name=".view.FileUploadActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".App_uploadfile_ffmpegtest" />
-        <activity android:name=".viewer.App_videoviewer" />
+        <activity android:name=".view.VideoViewerActivity" />
         <activity
-            android:name=".main.MainFragment"
+            android:name=".view.MainFragment"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".filejob.FileDownloadActivity"
+            android:name=".view.FileDownloadActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".viewer.App_audioviewer" />
-        <activity android:name=".etc.FileDetailActivity" />
-        <activity android:name=".etc.SearchResultActivity" />
-        <activity android:name=".etc.UserInfoActivity" />
-        <activity android:name=".user.GoogleNicknameActivity" />
+        <activity android:name=".view.AudioViewerActivity" />
+        <activity android:name=".view.FileDetailActivity" />
+        <activity android:name=".view.SearchResultActivity" />
+        <activity android:name=".view.UserInfoActivity" />
+        <activity android:name=".view.GoogleNicknameActivity" />
         <activity android:name=".App_test" />
-        <activity android:name=".user.LoginActivity"></activity>
+        <activity android:name=".view.LoginActivity"></activity>
     </application>
 
 </manifest>
