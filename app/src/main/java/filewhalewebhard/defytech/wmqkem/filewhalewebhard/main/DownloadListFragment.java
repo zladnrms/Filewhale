@@ -47,10 +47,10 @@ import java.util.List;
 
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.SQLite.DownloadListSQLHelper;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.App_downloadfile;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.user.App_login;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.FileDownloadActivity;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.user.LoginActivity;
 
-public class App_downlist extends Fragment {
+public class DownloadListFragment extends Fragment {
 
     static final String URLlink = "http://115.71.238.61"; // 호스팅 URL
     static String DOWNLOAD_FILENAME = null;
@@ -79,7 +79,7 @@ public class App_downlist extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.app_downlist, null);
+        view = inflater.inflate(R.layout.fragment_downloadlist, null);
 
         System.out.println("onCreateView");
 
@@ -123,7 +123,7 @@ public class App_downlist extends Fragment {
             View v = convertView;
             if (v == null) {
                 LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.lv_downlist, null);
+                v = vi.inflate(R.layout.listview_down_list, null);
             }
 
             final FileInfo f_info = items.get(position);
@@ -211,7 +211,7 @@ public class App_downlist extends Fragment {
                 llayout_downlist_article.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), App_downloadfile.class);
+                        Intent intent = new Intent(getActivity(), FileDownloadActivity.class);
                         intent.putExtra("_id", f_info.getFileIndex());
                         startActivity(intent);
                     }
@@ -647,7 +647,7 @@ public class App_downlist extends Fragment {
     };
 
     void notifycation() {
-        Intent intent = new Intent(getActivity(), App_login.class);  // 노티 클릭 시
+        Intent intent = new Intent(getActivity(), LoginActivity.class);  // 노티 클릭 시
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0 /* Request code */, intent,

@@ -20,9 +20,9 @@ import java.util.ArrayList;
 
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.SQLite.UploadListSQLHelper;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.App_downloadfile;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.FileDownloadActivity;
 
-public class App_uplist extends Fragment {
+public class UploadListFragment extends Fragment {
 
     static final String URLlink = "http://115.71.238.61"; // 호스팅 URL
     View view; // Fragment View 처리
@@ -45,7 +45,7 @@ public class App_uplist extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.app_uplist, null);
+        view = inflater.inflate(R.layout.fragment_uploadlist, null);
 
         System.out.println("onCreateView");
 
@@ -65,7 +65,7 @@ public class App_uplist extends Fragment {
         lv_uplist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), App_downloadfile.class);
+                Intent intent = new Intent(getActivity(), FileDownloadActivity.class);
                 intent.putExtra("_id", uplist.get(position).getfileIndex());
                 startActivity(intent);
             }
@@ -89,7 +89,7 @@ public class App_uplist extends Fragment {
             View v = convertView;
             if (v == null) {
                 LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.lv_uplist, null);
+                v = vi.inflate(R.layout.listview_upload_list, null);
             }
 
             FileInfo f_info = items.get(position);

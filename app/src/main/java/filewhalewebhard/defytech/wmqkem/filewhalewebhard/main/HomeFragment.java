@@ -26,7 +26,6 @@ import com.victor.loading.rotate.RotateLoading;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -41,11 +40,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc.App_blog;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc.BlogActivity;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.App_downloadfile;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.FileDownloadActivity;
 
-public class App_home extends Fragment {
+public class HomeFragment extends Fragment {
 
     static final String URLlink = "http://115.71.238.61"; // 호스팅 URL
     View view; // Fragment View 처리
@@ -75,7 +74,7 @@ public class App_home extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.app_home, null);
+        view = inflater.inflate(R.layout.fragment_home, null);
 
         System.out.println("onCreateView");
 
@@ -94,7 +93,7 @@ public class App_home extends Fragment {
         // 업로드 되어있는 게시물들 보여주기
         lv_filelist = (ListView) view.findViewById(R.id.lv_mainlist);
         lv_adapter = new FilelistAdapter(getActivity(), android.R.layout.simple_list_item_1, filelist); // 데이터
-        ViewGroup footer = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.lv_footer, null);
+        ViewGroup footer = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.listview_footer, null);
         lv_filelist.addFooterView(footer);
         lv_filelist.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -118,7 +117,7 @@ public class App_home extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (!(position == filelist.size())) { // 리스트뷰 푸터가 아니면
-                    Intent intent = new Intent(getActivity(), App_downloadfile.class);
+                    Intent intent = new Intent(getActivity(), FileDownloadActivity.class);
                     intent.putExtra("_id", filelist.get(position).getId());
                     startActivity(intent);
                 }
@@ -264,7 +263,7 @@ public class App_home extends Fragment {
             View v = convertView;
             if (v == null) {
                 LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.lv_mainlist, null);
+                v = vi.inflate(R.layout.listview_main_list, null);
 
                 ViewHolder holder = new ViewHolder();
                 holder.subject = (TextView) v.findViewById(R.id.tv_mainlist_subject);
@@ -297,7 +296,7 @@ public class App_home extends Fragment {
                                 public boolean onMenuItemClick(MenuItem item) {
                                     switch (item.getItemId()) {
                                         case R.id.p_whalelog:
-                                            Intent intent = new Intent(getActivity(), App_blog.class);
+                                            Intent intent = new Intent(getActivity(), BlogActivity.class);
                                             intent.putExtra("blogmaster", f_info.getWriter());
                                             startActivity(intent);
                                             break;
@@ -410,7 +409,7 @@ public class App_home extends Fragment {
                 System.out.println(userNick);
 
                 bm_profile = Glide.
-                        with(App_home.this).
+                        with(HomeFragment.this).
                         load(url).
                         asBitmap().
                         diskCacheStrategy(DiskCacheStrategy.NONE).

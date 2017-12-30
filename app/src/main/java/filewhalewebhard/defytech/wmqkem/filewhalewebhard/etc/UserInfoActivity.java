@@ -7,12 +7,12 @@ import android.view.View;
 
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 
-public class App_userinfo extends AppCompatActivity {
+public class UserInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_userinfo);
+        setContentView(R.layout.activity_user_info);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_backarrow);

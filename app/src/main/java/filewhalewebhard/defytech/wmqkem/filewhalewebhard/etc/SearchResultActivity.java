@@ -44,7 +44,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.App_downloadfile;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.FileDownloadActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -54,7 +54,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class App_searchresult extends AppCompatActivity {
+public class SearchResultActivity extends AppCompatActivity {
 
     // Network Connection
     static final String URLlink = "http://115.71.238.61"; // 호스팅 URL
@@ -79,7 +79,7 @@ public class App_searchresult extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_searchresult);
+        setContentView(R.layout.activity_search_result);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_backarrow);
@@ -100,7 +100,7 @@ public class App_searchresult extends AppCompatActivity {
         // 검색 결과 보여주기
         lv_filelist = (ListView) findViewById(R.id.lv_searchfilelist);
         lv_adapter = new FilelistAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, filelist); // 데이터
-        ViewGroup footer = (ViewGroup) getLayoutInflater().inflate(R.layout.lv_footer, null);
+        ViewGroup footer = (ViewGroup) getLayoutInflater().inflate(R.layout.listview_footer, null);
         lv_filelist.addFooterView(footer);
         lv_filelist.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -129,7 +129,7 @@ public class App_searchresult extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (!(position == filelist.size())) { // 리스트뷰 푸터가 아니면
-                    Intent intent = new Intent(getApplicationContext(), App_downloadfile.class);
+                    Intent intent = new Intent(getApplicationContext(), FileDownloadActivity.class);
                     intent.putExtra("_id", filelist.get(position).getId());
                     startActivity(intent);
                 }
@@ -325,7 +325,7 @@ public class App_searchresult extends AppCompatActivity {
                     lv_lock = false;
 
                     if(filelist.size()==0) {
-                        Toast.makeText(App_searchresult.this, "검색 결과가 없습니다다", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SearchResultActivity.this, "검색 결과가 없습니다다", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -351,7 +351,7 @@ public class App_searchresult extends AppCompatActivity {
             View v = convertView;
             if (v == null) {
                 LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.lv_mainlist, null);
+                v = vi.inflate(R.layout.listview_main_list, null);
 
                 ViewHolder holder = new ViewHolder();
                 holder.subject = (TextView) v.findViewById(R.id.tv_mainlist_subject);
@@ -377,14 +377,14 @@ public class App_searchresult extends AppCompatActivity {
                     holder.writerprofile.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            PopupMenu pmenu = new PopupMenu(App_searchresult.this, v);
+                            PopupMenu pmenu = new PopupMenu(SearchResultActivity.this, v);
                             getMenuInflater().inflate(R.menu.popup_menu, pmenu.getMenu());
                             pmenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(MenuItem item) {
                                     switch (item.getItemId()) {
                                         case R.id.p_whalelog:
-                                            Intent intent = new Intent(App_searchresult.this, App_blog.class);
+                                            Intent intent = new Intent(SearchResultActivity.this, BlogActivity.class);
                                             intent.putExtra("blogmaster", f_info.getWriter());
                                             startActivity(intent);
                                             break;
@@ -531,7 +531,7 @@ public class App_searchresult extends AppCompatActivity {
                 System.out.println(userNick);
 
                 bm_profile = Glide.
-                        with(App_searchresult.this).
+                        with(SearchResultActivity.this).
                         load(url).
                         asBitmap().
                         diskCacheStrategy(DiskCacheStrategy.NONE).

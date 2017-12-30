@@ -69,7 +69,7 @@ import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.Thumbnailsetting_ffmpeg;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.SQLite.UploadListSQLHelper;
 
-public class App_uploadfile extends AppCompatActivity {
+public class FileUploadActivity extends AppCompatActivity {
 
     static final String URLlink = "http://115.71.238.61"; // 호스팅 URL
     /*
@@ -144,7 +144,7 @@ public class App_uploadfile extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_uploadfile);
+        setContentView(R.layout.activity_file_upload);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_backarrow);
@@ -280,7 +280,7 @@ public class App_uploadfile extends AppCompatActivity {
 
                 final CharSequence[] items = {"이미지", "동영상", "오디오", "기타 파일"};
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(App_uploadfile.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(FileUploadActivity.this);
 
                 builder.setTitle("업로드할 파일 종류")        // 제목 설정
                         .setItems(items, new DialogInterface.OnClickListener() {    // 목록 클릭시 설정
@@ -349,7 +349,7 @@ public class App_uploadfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!et_upload_subject.getText().toString().equals("") && !et_upload_content.getText().toString().equals("") && !fileName.equals("") && !filePath.equals("") && !fileCategory.equals("select")) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(App_uploadfile.this);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(FileUploadActivity.this);
                     // 팝업Dialog
                     // Dialog 기본설정
                     builder.setTitle("파일 업로드");
@@ -380,7 +380,7 @@ public class App_uploadfile extends AppCompatActivity {
                     dialog.show();
 
                 } else {
-                    Toast.makeText(App_uploadfile.this, "모든 업로드 정보를 설정해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FileUploadActivity.this, "모든 업로드 정보를 설정해주세요.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -388,7 +388,7 @@ public class App_uploadfile extends AppCompatActivity {
         btn_videoencodesetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Encodingsetting_custom customdialog = new Encodingsetting_custom(App_uploadfile.this);
+                final Encodingsetting_custom customdialog = new Encodingsetting_custom(FileUploadActivity.this);
 
                 customdialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
@@ -448,7 +448,7 @@ public class App_uploadfile extends AppCompatActivity {
         btn_thumbnailsetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Thumbnailsetting_ffmpeg customdialog = new Thumbnailsetting_ffmpeg(App_uploadfile.this);
+                final Thumbnailsetting_ffmpeg customdialog = new Thumbnailsetting_ffmpeg(FileUploadActivity.this);
 
                 customdialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
@@ -625,7 +625,7 @@ public class App_uploadfile extends AppCompatActivity {
                         if (serverResponseCode == 200) {
                             runOnUiThread(new Runnable() {
                                 public void run() {
-                                    Toast.makeText(App_uploadfile.this, "File Upload Completed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(FileUploadActivity.this, "File Upload Completed", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -678,10 +678,10 @@ public class App_uploadfile extends AppCompatActivity {
 
                         switch (js_error) {
                             case "01":
-                                Toast.makeText(App_uploadfile.this, "게시물 정보를 모두 채워주세요 (not_full_content)", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FileUploadActivity.this, "게시물 정보를 모두 채워주세요 (not_full_content)", Toast.LENGTH_SHORT).show();
                                 break;
                             case "02":
-                                Toast.makeText(App_uploadfile.this, "서버 오류입니다 (move_fail)", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FileUploadActivity.this, "서버 오류입니다 (move_fail)", Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     } else { // 에러가 없으면 진행
@@ -698,7 +698,7 @@ public class App_uploadfile extends AppCompatActivity {
                                     js_m3u8name = c.getString("m3u8name");
                                 }
 
-                                Toast.makeText(App_uploadfile.this, "업로드 성공", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FileUploadActivity.this, "업로드 성공", Toast.LENGTH_SHORT).show();
                                 uploadListSQLHelper.insert(writer, fileSubject, fileName, fileCategory, String.valueOf(setfileUnit()), js_id);
 
                                 /*
@@ -871,7 +871,7 @@ public class App_uploadfile extends AppCompatActivity {
                         if (serverResponseCode == 200) {
                             runOnUiThread(new Runnable() {
                                 public void run() {
-                                    Toast.makeText(App_uploadfile.this, "File Upload Completed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(FileUploadActivity.this, "File Upload Completed", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -922,7 +922,7 @@ public class App_uploadfile extends AppCompatActivity {
 
                         switch (js_error) {
                             case "02":
-                                Toast.makeText(App_uploadfile.this, "서버 오류입니다 (move_fail)", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FileUploadActivity.this, "서버 오류입니다 (move_fail)", Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     } else { // 에러가 없으면 진행
@@ -935,7 +935,7 @@ public class App_uploadfile extends AppCompatActivity {
                                     js_id = c.getString("_id");
                                 }
 
-                                Toast.makeText(App_uploadfile.this, "업로드 성공", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FileUploadActivity.this, "업로드 성공", Toast.LENGTH_SHORT).show();
                                 uploadListSQLHelper.insert(writer, fileSubject, fileName, fileCategory, String.valueOf(setfileUnit()), js_id);
 
                                 finish();
@@ -959,13 +959,13 @@ public class App_uploadfile extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //Toast.makeText(App_uploadfile.this,response,Toast.LENGTH_LONG).show();
+                        //Toast.makeText(FileUploadActivity.this,response,Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //Toast.makeText(App_uploadfile.this,error.toString(),Toast.LENGTH_LONG).show();
+                        //Toast.makeText(FileUploadActivity.this,error.toString(),Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override

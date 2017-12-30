@@ -36,7 +36,7 @@ public class App_audioviewer extends AppCompatActivity implements SurfaceHolder.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_audioviewer);
+        setContentView(R.layout.activity_audio_viewer);
 
         iv_audioviewer = (ImageView) findViewById(R.id.iv_audioviewer);
 

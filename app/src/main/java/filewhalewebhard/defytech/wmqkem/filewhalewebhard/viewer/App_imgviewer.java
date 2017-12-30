@@ -25,7 +25,7 @@ public class App_imgviewer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_imgviewer);
+        setContentView(R.layout.activity_image_viewer);
 
         iv_imageviewer = (ImageView) findViewById(R.id.iv_imgviewer);
 

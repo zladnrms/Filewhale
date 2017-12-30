@@ -1,14 +1,25 @@
 package filewhalewebhard.defytech.wmqkem.filewhalewebhard.user;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,9 +32,10 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.main.MainFragment;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 
-public class App_join extends AppCompatActivity {
+public class GoogleNicknameActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
     static final String URLlink = "http://115.71.238.61"; // 호스팅 URL
     /*
@@ -34,49 +46,50 @@ public class App_join extends AppCompatActivity {
     private String js_result = null;
 
     // 중복체크 / 가입 버튼, 회원정보 입력칸
-    Button btn_chk_id, btn_chk_nick, btn_join;
-    EditText et_join_id, et_join_pw, et_join_nick;
+    Button btn_chk_nick, btn_join, btn_cancel;
+    EditText et_join_nick;
 
     // 중복체크 필요 변수, 회원정보 변수
-    private int checkNum = 0;
-    private Boolean checkId = false, checkNick = false;
-    private String join_id, join_pw, join_nick;
+    private Boolean checkNick = false;
+    private String join_nick;
+
+    // 로그인 성공 시 닉네임 저장
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+
+    // 구글 로그인
+    private String googleId, googleEmail;
+    private static final String GOOGLETAG = "구글 로그인 시도";
+    private static final int RC_SIGN_IN = 9001;
+    private GoogleApiClient mGoogleApiClient;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_join);
+        setContentView(R.layout.activity_google_nickname);
 
-        btn_chk_id = (Button) findViewById(R.id.btn_chk_id);
+        // 로그인 성공 시 닉네임 저장
+        pref = getSharedPreferences("nickname", 0);
+        editor = pref.edit();
+
+        Intent intent = getIntent();
+        googleId = intent.getStringExtra("googleId");
+        googleEmail = intent.getStringExtra("googleEmail");
+
         btn_chk_nick = (Button) findViewById(R.id.btn_chk_nick);
         btn_join = (Button) findViewById(R.id.btn_join);
-        et_join_id = (EditText) findViewById(R.id.et_join_id);
-        et_join_pw = (EditText) findViewById(R.id.et_join_pw);
+        btn_cancel = (Button) findViewById(R.id.btn_cancel);
         et_join_nick = (EditText) findViewById(R.id.et_join_nick);
-
-        btn_chk_id.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!et_join_id.getText().toString().equals("")) {
-                    checkNum = 0;
-                    join_id = et_join_id.getText().toString().toLowerCase();
-                    new checkJoinInfo().execute();
-                } else {
-                    Toast.makeText(App_join.this, "아이디를 입력해주세요", Toast.LENGTH_SHORT).show();
-                    et_join_id.requestFocus();
-                }
-            }
-        });
 
         btn_chk_nick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!et_join_nick.getText().toString().equals("")) {
-                    checkNum = 1;
                     join_nick = et_join_nick.getText().toString();
                     new checkJoinInfo().execute();
                 } else {
-                    Toast.makeText(App_join.this, "별명을 입력해주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GoogleNicknameActivity.this, "별명을 입력해주세요", Toast.LENGTH_SHORT).show();
                     et_join_nick.requestFocus();
                 }
             }
@@ -85,38 +98,18 @@ public class App_join extends AppCompatActivity {
         btn_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                join_pw = et_join_pw.getText().toString();
-
-                if(join_pw.length() >= 8) {
-                    if (checkId && checkNick) {
-
-                        new joinConnection().execute();
-                    } else {
-                        Toast.makeText(App_join.this, "전부 중복체크 해주세요", Toast.LENGTH_SHORT).show();
-                    }
+                if (checkNick) {
+                    new joinConnection().execute();
                 } else {
-                    Toast.makeText(App_join.this, "비밀번호는 8자 이상이여야 합니다", Toast.LENGTH_SHORT).show();
-                    et_join_pw.requestFocus();
+                    Toast.makeText(GoogleNicknameActivity.this, "전부 중복체크 해주세요", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        et_join_id.addTextChangedListener(new TextWatcher() {
-
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                btn_chk_id.setClickable(true);
-                checkId = false;
-            }
-
-            @Override
-            public void afterTextChanged(Editable arg0) {
-                // 입력이 끝났을 때
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // 입력하기 전에
+            public void onClick(View v) {
+                signOut();
             }
         });
 
@@ -139,6 +132,17 @@ public class App_join extends AppCompatActivity {
             }
         });
 
+        /*
+         * 구글 로그인 처리
+         */
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
     }
 
     // 중복체크 처리
@@ -161,11 +165,7 @@ public class App_join extends AppCompatActivity {
                     conn.setRequestProperty("content-type", "application/x-www-form-urlencoded");
 
                     StringBuffer buffer = new StringBuffer();
-                    if (checkNum == 0) {
-                        buffer.append("join_id").append("=").append(join_id);
-                    } else if (checkNum == 1) {
-                        buffer.append("join_nick").append("=").append(join_nick);
-                    }
+                    buffer.append("join_nick").append("=").append(join_nick);
 
                     OutputStreamWriter outStream = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
                     PrintWriter writer = new PrintWriter(outStream);
@@ -211,7 +211,7 @@ public class App_join extends AppCompatActivity {
 
                         switch (js_error) {
                             case "01":
-                                Toast.makeText(App_join.this, "DB 연결에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(GoogleNicknameActivity.this, "DB 연결에 실패하였습니다", Toast.LENGTH_SHORT).show();
                                 break;
                         }
 
@@ -221,33 +221,22 @@ public class App_join extends AppCompatActivity {
 
                             switch (js_result) {
                                 case "chk_success":
-                                    if (checkNum == 0) {
-                                        Toast.makeText(App_join.this, "사용가능한 아이디 입니다.", Toast.LENGTH_SHORT).show();
-                                        checkId = true;
-                                        et_join_id.setClickable(false);
-                                        et_join_id.setEnabled(false);
-                                        et_join_id.setFocusable(false);
-                                        et_join_id.setFocusableInTouchMode(false);
-                                        btn_chk_id.setClickable(false);
-                                    } else if (checkNum == 1) {
-                                        Toast.makeText(App_join.this, "사용가능한 닉네임 입니다.", Toast.LENGTH_SHORT).show();
-                                        checkNick = true;
-                                        et_join_nick.setClickable(false);
-                                        et_join_nick.setEnabled(false);
-                                        et_join_nick.setFocusable(false);
-                                        et_join_nick.setFocusableInTouchMode(false);
-                                        btn_chk_nick.setClickable(false);
-                                    }
+                                    Toast.makeText(GoogleNicknameActivity.this, "사용가능한 닉네임 입니다.", Toast.LENGTH_SHORT).show();
+                                    checkNick = true;
+                                    et_join_nick.setClickable(false);
+                                    et_join_nick.setEnabled(false);
+                                    et_join_nick.setFocusable(false);
+                                    et_join_nick.setFocusableInTouchMode(false);
+                                    btn_chk_nick.setClickable(false);
 
                                     break;
                                 case "chk_failure":
-                                    Toast.makeText(App_join.this, "중복입니다. 다시 입력해주세요", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(GoogleNicknameActivity.this, "중복입니다. 다시 입력해주세요", Toast.LENGTH_SHORT).show();
                                     break;
                             }
                         }
                     }
                 }
-
             } catch (JSONException e) {
                 System.out.println("JSONException : " + e);
             }
@@ -261,7 +250,7 @@ public class App_join extends AppCompatActivity {
         protected String doInBackground(Void... params) {
 
             try {
-                URL url = new URL(URLlink + "/android/member/join_member.php"); // 앨범 폴더의 dbname 폴더에 접근
+                URL url = new URL(URLlink + "/android/member/join_googlemember.php"); // 앨범 폴더의 dbname 폴더에 접근
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 if (conn != null) {
@@ -274,8 +263,8 @@ public class App_join extends AppCompatActivity {
                     conn.setRequestProperty("content-type", "application/x-www-form-urlencoded");
 
                     StringBuffer buffer = new StringBuffer();
-                    buffer.append("join_id").append("=").append(join_id).append("&");
-                    buffer.append("join_pw").append("=").append(join_pw).append("&");
+                    buffer.append("googleId").append("=").append(googleId).append("&");
+                    buffer.append("googleEmail").append("=").append(googleEmail).append("&");
                     buffer.append("join_nick").append("=").append(join_nick);
 
                     OutputStreamWriter outStream = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
@@ -324,7 +313,7 @@ public class App_join extends AppCompatActivity {
 
                         switch (js_error) {
                             case "01":
-                                Toast.makeText(App_join.this, "DB 연결에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(GoogleNicknameActivity.this, "DB 연결에 실패하였습니다", Toast.LENGTH_SHORT).show();
                                 break;
                         }
 
@@ -334,19 +323,27 @@ public class App_join extends AppCompatActivity {
 
                             switch (js_result) {
                                 case "success":
-                                    Toast.makeText(App_join.this, "가입성공", Toast.LENGTH_SHORT).show();
-                                    // 가입 성공 시 로그인 화면으로
+                                    Toast.makeText(GoogleNicknameActivity.this, "가입성공", Toast.LENGTH_SHORT).show();
+                                    // 가입 성공 시 메인 화면으로
+                                    //닉네임 저장
+                                    editor.putString("nick", join_nick);
+                                    editor.commit();
+                                    Intent intent = new Intent(GoogleNicknameActivity.this, MainFragment.class);
+                                    intent.putExtra("GOOGLELOGIN", true);
+                                    startActivity(intent);
                                     finish();
-                                    //Intent intent = new Intent(App_join.this, App_login.class);
-                                    //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    //startActivity(intent);
                                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                     break;
-                                case "already_id":
-                                    Toast.makeText(App_join.this, "이미 있는 아이디입니다", Toast.LENGTH_SHORT).show();
+                                case "already_google_id":
+                                    Toast.makeText(GoogleNicknameActivity.this, "이미 있는 구글 ID값입니다. 재로그인 해주세요", Toast.LENGTH_SHORT).show();
+                                    signOut();
+                                    break;
+                                case "already_google_email":
+                                    Toast.makeText(GoogleNicknameActivity.this, "이미 있는 구글 이메일입니다. 재로그인 해주세요", Toast.LENGTH_SHORT).show();
+                                    signOut();
                                     break;
                                 case "already_nick":
-                                    Toast.makeText(App_join.this, "이미 있는 닉네임입니다", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(GoogleNicknameActivity.this, "이미 있는 닉네임입니다", Toast.LENGTH_SHORT).show();
                                     break;
                             }
                         }
@@ -359,5 +356,22 @@ public class App_join extends AppCompatActivity {
         }
     }
 
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        Intent intent = new Intent(GoogleNicknameActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    }
+                });
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(GOOGLETAG, "구글 로그인 연결 실패 :" + connectionResult);
+    }
 }
 

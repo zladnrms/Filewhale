@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 
-public class App_filecontentdetail extends AppCompatActivity {
+public class FileDetailActivity extends AppCompatActivity {
 
     String filecontent;
 
@@ -18,7 +18,7 @@ public class App_filecontentdetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_filecontentdetail);
+        setContentView(R.layout.activity_file_detail);
 
         tv_filecontent = (TextView) findViewById(R.id.tv_filecontent);
 

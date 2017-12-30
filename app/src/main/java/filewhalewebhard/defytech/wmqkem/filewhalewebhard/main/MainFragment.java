@@ -59,17 +59,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc.App_searchresult;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc.SearchResultActivity;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.App_test;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.App_uploadfile_ffmpegtest;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc.App_userinfo;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc.UserInfoActivity;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.SQLite.DownloadListSQLHelper;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.SQLite.LoginSQLHelper;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.App_uploadfile;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.user.App_login;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.FileUploadActivity;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.user.LoginActivity;
 
-public class App_main extends AppCompatActivity
+public class MainFragment extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, TabLayout.OnTabSelectedListener ,GoogleApiClient.OnConnectionFailedListener{
 
     static final String URLlink = "http://115.71.238.61"; // 호스팅 URL
@@ -118,7 +118,7 @@ public class App_main extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_main);
+        setContentView(R.layout.fragment_main);
 
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -167,7 +167,7 @@ public class App_main extends AppCompatActivity
         actionA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(App_main.this, App_uploadfile_ffmpegtest.class);
+                Intent intent = new Intent(MainFragment.this, App_uploadfile_ffmpegtest.class);
                 startActivity(intent);
             }
         });
@@ -177,7 +177,7 @@ public class App_main extends AppCompatActivity
         actionB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(App_main.this, App_uploadfile.class);
+                Intent intent = new Intent(MainFragment.this, FileUploadActivity.class);
                 startActivity(intent);
             }
         });
@@ -224,7 +224,7 @@ public class App_main extends AppCompatActivity
                     signOut();
                 } else {
                     loginSqlHelper.delete(); // 자동 로그인 해제
-                    Intent intent = new Intent(App_main.this, App_login.class);
+                    Intent intent = new Intent(MainFragment.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -338,19 +338,19 @@ public class App_main extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_settings) {
-            Intent intent = new Intent(App_main.this, App_userinfo.class);
+            Intent intent = new Intent(MainFragment.this, UserInfoActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_apkinfo) {
 
         } else if (id == R.id.nav_cpptest) {
-            Intent intent = new Intent(App_main.this, App_test.class);
+            Intent intent = new Intent(MainFragment.this, App_test.class);
             startActivity(intent);
         } else if (id == R.id.nav_logout) {
             if(GOOGLELOGIN) {
                 signOut();
             } else {
                 loginSqlHelper.delete(); // 자동 로그인 해제
-                Intent intent = new Intent(App_main.this, App_login.class);
+                Intent intent = new Intent(MainFragment.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -371,7 +371,7 @@ public class App_main extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String word) {
-                Intent intent = new Intent(App_main.this, App_searchresult.class);
+                Intent intent = new Intent(MainFragment.this, SearchResultActivity.class);
                 intent.putExtra("searchword", word);
                 startActivity(intent);
                 return false;
@@ -400,13 +400,13 @@ public class App_main extends AppCompatActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    App_home homeTab = new App_home();
+                    HomeFragment homeTab = new HomeFragment();
                     return homeTab;
                 case 1:
-                    App_downlist downlistTab = new App_downlist();
+                    DownloadListFragment downlistTab = new DownloadListFragment();
                     return downlistTab;
                 case 2:
-                    App_uplist uplistTab = new App_uplist();
+                    UploadListFragment uplistTab = new UploadListFragment();
                     return uplistTab;
                 default:
                     return null;
@@ -440,7 +440,7 @@ public class App_main extends AppCompatActivity
                 String url = URLlink + "/android/filestorage/profile/" + "profile_" + userNick + ".png";
 
                 bm_profile = Glide.
-                        with(App_main.this).
+                        with(MainFragment.this).
                         load(url).
                         asBitmap().
                         diskCacheStrategy(DiskCacheStrategy.NONE).
@@ -584,7 +584,7 @@ public class App_main extends AppCompatActivity
                         if (serverResponseCode == 200) {
                             runOnUiThread(new Runnable() {
                                 public void run() {
-                                    Toast.makeText(App_main.this, "File Upload Completed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainFragment.this, "File Upload Completed", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -610,7 +610,7 @@ public class App_main extends AppCompatActivity
                     ex.printStackTrace();
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            Toast.makeText(App_main.this, "MalformedURLException", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainFragment.this, "MalformedURLException", Toast.LENGTH_SHORT).show();
                         }
                     });
                     Log.i("WRITELog", "[UploadImageToServer] error: " + ex.getMessage(), ex);
@@ -618,7 +618,7 @@ public class App_main extends AppCompatActivity
                     e.printStackTrace();
                     runOnUiThread(new Runnable() {
                         public void run() {
-                            Toast.makeText(App_main.this, "Got Exception : see logcat ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainFragment.this, "Got Exception : see logcat ", Toast.LENGTH_SHORT).show();
                         }
                     });
                     Log.i("WRITELOG", "[UploadImageToServer] Upload file to server Exception Exception : " + e.getMessage(), e);
@@ -648,15 +648,15 @@ public class App_main extends AppCompatActivity
 
                         switch (js_error) {
                             case "01":
-                                Toast.makeText(App_main.this, "게시물 정보를 모두 채워주세요 (not_full_content)", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainFragment.this, "게시물 정보를 모두 채워주세요 (not_full_content)", Toast.LENGTH_SHORT).show();
                                 break;
                             case "02":
-                                Toast.makeText(App_main.this, "서버 오류입니다 (move_fail)", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainFragment.this, "서버 오류입니다 (move_fail)", Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     } else { // 에러가 없으면 진행
                         if (!c.isNull("result")) {
-                            Toast.makeText(App_main.this, "프로필 사진이 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainFragment.this, "프로필 사진이 변경되었습니다.", Toast.LENGTH_SHORT).show();
                             iv_profile.setImageBitmap(bm_profile);  //배치해놓은 ImageView에 set
                         }
                     }
@@ -731,7 +731,7 @@ public class App_main extends AppCompatActivity
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        Intent intent = new Intent(App_main.this, App_login.class);
+                        Intent intent = new Intent(MainFragment.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     }

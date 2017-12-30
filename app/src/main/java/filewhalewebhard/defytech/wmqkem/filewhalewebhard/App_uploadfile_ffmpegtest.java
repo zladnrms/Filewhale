@@ -151,7 +151,7 @@ public class App_uploadfile_ffmpegtest extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_uploadfile);
+        setContentView(R.layout.activity_file_upload);
 
         // 닉네임 받아오기용
         pref = getSharedPreferences("nickname", 0);
@@ -966,13 +966,13 @@ public class App_uploadfile_ffmpegtest extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //Toast.makeText(App_uploadfile.this,response,Toast.LENGTH_LONG).show();
+                        //Toast.makeText(FileUploadActivity.this,response,Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //Toast.makeText(App_uploadfile.this,error.toString(),Toast.LENGTH_LONG).show();
+                        //Toast.makeText(FileUploadActivity.this,error.toString(),Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override

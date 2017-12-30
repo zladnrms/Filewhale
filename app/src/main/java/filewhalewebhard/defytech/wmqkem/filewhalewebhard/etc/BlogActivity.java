@@ -38,9 +38,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.App_downloadfile;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.filejob.FileDownloadActivity;
 
-public class App_blog extends AppCompatActivity {
+public class BlogActivity extends AppCompatActivity {
 
     static final String URLlink = "http://115.71.238.61"; // 호스팅 URL
 
@@ -72,7 +72,7 @@ public class App_blog extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_blog);
+        setContentView(R.layout.activity_blog);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_backarrow);
@@ -97,7 +97,7 @@ public class App_blog extends AppCompatActivity {
         // WhaleLog 주인이 올린 게시글 보여주기
         lv_filelist = (ListView) findViewById(R.id.lv_blogfilelist);
         lv_adapter = new FilelistAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, filelist); // 데이터
-        ViewGroup footer = (ViewGroup) getLayoutInflater().inflate(R.layout.lv_footer, null);
+        ViewGroup footer = (ViewGroup) getLayoutInflater().inflate(R.layout.listview_footer, null);
         lv_filelist.addFooterView(footer);
         lv_filelist.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -121,7 +121,7 @@ public class App_blog extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (!(position == filelist.size())) { // 리스트뷰 푸터가 아니면
-                    Intent intent = new Intent(getApplicationContext(), App_downloadfile.class);
+                    Intent intent = new Intent(getApplicationContext(), FileDownloadActivity.class);
                     intent.putExtra("_id", filelist.get(position).getId());
                     startActivity(intent);
                 }
@@ -147,7 +147,7 @@ public class App_blog extends AppCompatActivity {
                 String url = URLlink + "/android/filestorage/profile/" + "profile_" + blogMaster + ".png";
 
                 bm_profile = Glide.
-                        with(App_blog.this).
+                        with(BlogActivity.this).
                         load(url).
                         asBitmap().
                         diskCacheStrategy(DiskCacheStrategy.NONE).
@@ -315,7 +315,7 @@ public class App_blog extends AppCompatActivity {
             View v = convertView;
             if (v == null) {
                 LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.lv_mainlist, null);
+                v = vi.inflate(R.layout.listview_main_list, null);
 
                 ViewHolder holder = new ViewHolder();
                 holder.subject = (TextView) v.findViewById(R.id.tv_mainlist_subject);

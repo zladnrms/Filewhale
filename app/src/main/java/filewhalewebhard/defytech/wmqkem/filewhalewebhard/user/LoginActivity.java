@@ -38,11 +38,11 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.main.App_main;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.main.MainFragment;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.SQLite.LoginSQLHelper;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 
-public class App_login extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     static final String URLlink = "http://115.71.238.61"; // 호스팅 URL
 
@@ -93,7 +93,7 @@ public class App_login extends AppCompatActivity implements GoogleApiClient.OnCo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_login);
+        setContentView(R.layout.activity_login);
 
         // 로그인 시 회원정보 저장 DB
         loginSqlHelper = new LoginSQLHelper(getApplicationContext(), "LoginData.db", null, 1);
@@ -123,7 +123,7 @@ public class App_login extends AppCompatActivity implements GoogleApiClient.OnCo
 
                     new loginConnection().execute("");
                 } else {
-                    Toast.makeText(App_login.this, "아이디와 비밀번호를 모두 입력해주세요", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "아이디와 비밀번호를 모두 입력해주세요", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -131,7 +131,7 @@ public class App_login extends AppCompatActivity implements GoogleApiClient.OnCo
         btn_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(App_login.this, App_join.class);
+                Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
@@ -293,10 +293,10 @@ public class App_login extends AppCompatActivity implements GoogleApiClient.OnCo
 
                         switch (js_error) {
                             case "01":
-                                Toast.makeText(App_login.this, "DB 연결에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "DB 연결에 실패하였습니다", Toast.LENGTH_SHORT).show();
                                 break;
                             case "02":
-                                Toast.makeText(App_login.this, "서버 오류입니다 (date_fail)", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "서버 오류입니다 (date_fail)", Toast.LENGTH_SHORT).show();
                                 break;
                         }
 
@@ -306,19 +306,19 @@ public class App_login extends AppCompatActivity implements GoogleApiClient.OnCo
 
                             switch (js_result) {
                                 case "miss_id":
-                                    Toast.makeText(App_login.this, "가입되어 있지 않은 아이디입니다", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "가입되어 있지 않은 아이디입니다", Toast.LENGTH_SHORT).show();
                                     break;
                                 case "miss_pw":
-                                    Toast.makeText(App_login.this, "비밀번호가 틀렸습니다", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "비밀번호가 틀렸습니다", Toast.LENGTH_SHORT).show();
                                     if (!c.isNull("nick")) {
                                         js_nick = c.getString("nick");
-                                        Toast.makeText(App_login.this, js_nick, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, js_nick, Toast.LENGTH_SHORT).show();
                                     }
                                     break;
                                 case "success":
                                     if (!c.isNull("nick")) {
                                         js_nick = c.getString("nick");
-                                        Toast.makeText(App_login.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                                         // php에서 받아온 pw의 md5 암호화값
                                         if (!c.isNull("md5pw") && !autoLogin) { // 자동 로그인이 아닐 경우
                                             js_md5pw = c.getString("md5pw");
@@ -328,31 +328,31 @@ public class App_login extends AppCompatActivity implements GoogleApiClient.OnCo
                                         editor.putString("nick", js_nick);
                                         editor.commit();
                                         //닉네임 저장 //
-                                        Intent intent = new Intent(App_login.this, App_main.class);
+                                        Intent intent = new Intent(LoginActivity.this, MainFragment.class);
                                         startActivity(intent);
                                         finish();
                                     } else { // 받아온 nick이 null이라 일어나는 문제
-                                        Toast.makeText(App_login.this, "로그인 실패 (네트워크 문제)", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, "로그인 실패 (네트워크 문제)", Toast.LENGTH_SHORT).show();
                                     }
                                     break;
                                 case "google_success":
                                     if (!c.isNull("nick")) {
                                         js_nick = c.getString("nick");
-                                        Toast.makeText(App_login.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                                         //닉네임 저장
                                         editor.putString("nick", js_nick);
                                         editor.commit();
-                                        Intent intent = new Intent(App_login.this, App_main.class);
+                                        Intent intent = new Intent(LoginActivity.this, MainFragment.class);
                                         intent.putExtra("GOOGLELOGIN", true);
                                         startActivity(intent);
                                         finish();
                                     } else { // 받아온 nick이 null이라 일어나는 문제
-                                        Toast.makeText(App_login.this, "로그인 실패 (네트워크 문제)", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, "로그인 실패 (네트워크 문제)", Toast.LENGTH_SHORT).show();
                                     }
                                     break;
                                 case "no_exist_google_id":
-                                    Toast.makeText(App_login.this, "(필수) 사용하실 닉네임을 설정해주세요!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(App_login.this, App_joinnick.class);
+                                    Toast.makeText(LoginActivity.this, "(필수) 사용하실 닉네임을 설정해주세요!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(LoginActivity.this, GoogleNicknameActivity.class);
                                     intent.putExtra("googleId", googleId);
                                     intent.putExtra("googleEmail", googleEmail);
                                     startActivity(intent);

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -13,7 +12,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.MediaController;
-import android.widget.VideoView;
 
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 
@@ -35,7 +33,7 @@ public class App_videoviewer extends AppCompatActivity implements SurfaceHolder.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_videoviewer);
+        setContentView(R.layout.activity_video_viewer);
 
         // 파일의 이름을 가져옴 (확장자 제외)
         Intent intent = getIntent();

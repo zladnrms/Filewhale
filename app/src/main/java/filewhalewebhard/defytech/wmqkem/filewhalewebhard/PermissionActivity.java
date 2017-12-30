@@ -15,9 +15,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.user.App_login;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.user.LoginActivity;
 
-public class App_permission extends AppCompatActivity {
+public class PermissionActivity extends AppCompatActivity {
 
 
     private LinearLayout layoutCameraCol, layoutStorageCol, layoutCameraDet, layoutStorageDet;
@@ -95,18 +95,18 @@ public class App_permission extends AppCompatActivity {
     /* Check Android Version*/
     private void checkAndroidVersion() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(App_permission.this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    + ContextCompat.checkSelfPermission(App_permission.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    + ContextCompat.checkSelfPermission(App_permission.this, Manifest.permission.CAMERA)
+            if (ContextCompat.checkSelfPermission(PermissionActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    + ContextCompat.checkSelfPermission(PermissionActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    + ContextCompat.checkSelfPermission(PermissionActivity.this, Manifest.permission.CAMERA)
                     == PackageManager.PERMISSION_GRANTED) {
 
-                Intent intent = new Intent(App_permission.this, App_login.class);
+                Intent intent = new Intent(PermissionActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
 
             }
         } else {
-            Intent intent = new Intent(App_permission.this, App_login.class);
+            Intent intent = new Intent(PermissionActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
@@ -114,21 +114,21 @@ public class App_permission extends AppCompatActivity {
 
     /* Permission Check */
     private void checkPermission() {
-        if (ContextCompat.checkSelfPermission(App_permission.this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                + ContextCompat.checkSelfPermission(App_permission.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                + ContextCompat.checkSelfPermission(App_permission.this, Manifest.permission.CAMERA)
+        if (ContextCompat.checkSelfPermission(PermissionActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                + ContextCompat.checkSelfPermission(PermissionActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                + ContextCompat.checkSelfPermission(PermissionActivity.this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(App_permission.this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    || ActivityCompat.shouldShowRequestPermissionRationale(App_permission.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    || ActivityCompat.shouldShowRequestPermissionRationale(App_permission.this, Manifest.permission.CAMERA)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(PermissionActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(PermissionActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(PermissionActivity.this, Manifest.permission.CAMERA)) {
 
-                Snackbar.make(App_permission.this.findViewById(android.R.id.content),
+                Snackbar.make(PermissionActivity.this.findViewById(android.R.id.content),
                         "방송 송출, 시청의 원활한 진행을 위해 권한을 허용해주세요",
                         Snackbar.LENGTH_INDEFINITE).setAction("설정", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ActivityCompat.requestPermissions(App_permission.this,
+                                ActivityCompat.requestPermissions(PermissionActivity.this,
                                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE
                                                 , Manifest.permission.WRITE_EXTERNAL_STORAGE
                                                 , Manifest.permission.CAMERA},
@@ -138,13 +138,13 @@ public class App_permission extends AppCompatActivity {
 
                 ).show();
             } else {
-                ActivityCompat.requestPermissions(App_permission.this,
+                ActivityCompat.requestPermissions(PermissionActivity.this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
                         PERMISSIONS_MULTIPLE_REQUEST);
             }
         } else {
             // if permission already granted
-            Intent intent = new Intent(App_permission.this, App_login.class);
+            Intent intent = new Intent(PermissionActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
@@ -163,16 +163,16 @@ public class App_permission extends AppCompatActivity {
 
                     if (readExternalFile && writeExternalFile && cameraPermission) {
                         // if permission granted
-                        Intent intent = new Intent(App_permission.this, App_login.class);
+                        Intent intent = new Intent(PermissionActivity.this, LoginActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        Snackbar.make(App_permission.this.findViewById(android.R.id.content),
+                        Snackbar.make(PermissionActivity.this.findViewById(android.R.id.content),
                                 "방송 송출, 시청의 원활한 진행을 위해 권한을 허용해주세요",
                                 Snackbar.LENGTH_INDEFINITE).setAction("설정", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ActivityCompat.requestPermissions(App_permission.this,
+                                ActivityCompat.requestPermissions(PermissionActivity.this,
                                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE
                                                 , Manifest.permission.WRITE_EXTERNAL_STORAGE
                                                 , Manifest.permission.CAMERA},

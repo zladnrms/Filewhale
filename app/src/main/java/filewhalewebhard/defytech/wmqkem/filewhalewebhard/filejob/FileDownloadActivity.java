@@ -44,16 +44,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc.App_filecontentdetail;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.main.App_main;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.etc.FileDetailActivity;
+import filewhalewebhard.defytech.wmqkem.filewhalewebhard.main.MainFragment;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.SQLite.DownloadListSQLHelper;
-import filewhalewebhard.defytech.wmqkem.filewhalewebhard.customview.GraphView;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.R;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.viewer.App_audioviewer;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.viewer.App_imgviewer;
 import filewhalewebhard.defytech.wmqkem.filewhalewebhard.viewer.App_videoviewer;
 
-public class App_downloadfile extends AppCompatActivity {
+public class FileDownloadActivity extends AppCompatActivity {
 
     static final String URLlink = "http://115.71.238.61"; // 호스팅 URL
     /*
@@ -133,7 +132,7 @@ public class App_downloadfile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.app_downloadfile);
+        setContentView(R.layout.activity_file_download);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_backarrow);
@@ -182,7 +181,7 @@ public class App_downloadfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                if (et_comment.getText().toString().equals("")) {
-                    Toast.makeText(App_downloadfile.this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FileDownloadActivity.this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show();
                 } else {
                     new putComment().execute();
                 }
@@ -192,7 +191,7 @@ public class App_downloadfile extends AppCompatActivity {
         // 댓글 보여주기
         lv_commentlist = (ListView) findViewById(R.id.lv_commentlist);
         lv_adapter = new CommentlistAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, commentlist); // 데이터
-        ViewGroup footer = (ViewGroup) getLayoutInflater().inflate(R.layout.lv_footer, null);
+        ViewGroup footer = (ViewGroup) getLayoutInflater().inflate(R.layout.listview_footer, null);
         lv_commentlist.setAdapter(lv_adapter);
         lv_commentlist.setOnTouchListener(new View.OnTouchListener() { // 댓글 리스트를 스크롤할 때는 게시물 액티비티 스크롤 무시
             @Override
@@ -217,19 +216,19 @@ public class App_downloadfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (pfilecategory.matches("비디오_"+".*")) {
-                    Intent intent = new Intent(App_downloadfile.this, App_videoviewer.class);
+                    Intent intent = new Intent(FileDownloadActivity.this, App_videoviewer.class);
                     intent.putExtra("notcolumnfilename", notColumnFileName);
                     intent.putExtra("filecategory", EngCategory);
                     startActivity(intent);
                 }
                 else if(pfilecategory.matches("이미지_"+".*")){
-                    Intent intent = new Intent(App_downloadfile.this, App_imgviewer.class);
+                    Intent intent = new Intent(FileDownloadActivity.this, App_imgviewer.class);
                     intent.putExtra("filename", pfilename);
                     intent.putExtra("filecategory", EngCategory);
                     startActivity(intent);
                 }
                 else if(pfilecategory.matches("오디오_"+".*")){
-                    Intent intent = new Intent(App_downloadfile.this, App_audioviewer.class);
+                    Intent intent = new Intent(FileDownloadActivity.this, App_audioviewer.class);
                     intent.putExtra("filecategory", EngCategory);
                     intent.putExtra("filename", pfilename);
                     intent.putExtra("covername", covername);
@@ -243,7 +242,7 @@ public class App_downloadfile extends AppCompatActivity {
         btn_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(App_downloadfile.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(FileDownloadActivity.this);
                 // 팝업Dialog
                 // Dialog 기본설정
                 builder.setTitle("파일웨어");
@@ -267,7 +266,7 @@ public class App_downloadfile extends AppCompatActivity {
         llayout_filecontent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(App_downloadfile.this, App_filecontentdetail.class);
+                Intent intent = new Intent(FileDownloadActivity.this, FileDetailActivity.class);
                 intent.putExtra("filecontent", pfilecontent);
                 startActivity(intent);
             }
@@ -353,7 +352,7 @@ public class App_downloadfile extends AppCompatActivity {
 
             try {
                 if (jarray.length() == 0) {
-                    Toast.makeText(App_downloadfile.this, "서버에 없는 파일 정보입니다. 목록을 갱신해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FileDownloadActivity.this, "서버에 없는 파일 정보입니다. 목록을 갱신해주세요.", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
                     for (int i = 0; i < jarray.length(); i++) {
@@ -428,7 +427,7 @@ public class App_downloadfile extends AppCompatActivity {
                 String url = URLlink + "/android/filestorage/profile/" + "profile_" + pwriter + ".png";
 
                 bm_writer_profile = Glide.
-                        with(App_downloadfile.this).
+                        with(FileDownloadActivity.this).
                         load(url).
                         asBitmap().
                         diskCacheStrategy(DiskCacheStrategy.NONE).
@@ -474,7 +473,7 @@ public class App_downloadfile extends AppCompatActivity {
         if (pfilecategory.matches("비디오_"+".*")) {
 
             Glide.
-                    with(App_downloadfile.this).
+                    with(FileDownloadActivity.this).
                     load(URLlink + "/HLS/thumbnail/" + EngCategory + "_" + pfilename + ".png").
                     fitCenter().
                     diskCacheStrategy(DiskCacheStrategy.NONE).
@@ -486,7 +485,7 @@ public class App_downloadfile extends AppCompatActivity {
             if(!covername.equals("")) {
 
                 Glide.
-                        with(App_downloadfile.this).
+                        with(FileDownloadActivity.this).
                         load(URLlink + "/android/filestorage/a_coverimg/" + covername).
                         fitCenter().
                         diskCacheStrategy(DiskCacheStrategy.NONE).
@@ -503,7 +502,7 @@ public class App_downloadfile extends AppCompatActivity {
             // GIF 파일 일 경우 대비
             GlideDrawableImageViewTarget ivTarget = new GlideDrawableImageViewTarget(iv_filethumbnail);
             Glide.
-                    with(App_downloadfile.this).
+                    with(FileDownloadActivity.this).
                     load(URLlink + "/android/filestorage/" + EngCategory + "/" + pfilename).
                     fitCenter().
                     diskCacheStrategy(DiskCacheStrategy.NONE).
@@ -729,7 +728,7 @@ public class App_downloadfile extends AppCompatActivity {
 
                     if (!c.isNull("result")) {
                         if(c.getString("result").equals("success")){
-                            Toast.makeText(App_downloadfile.this, "게시물을 삭제하셨습니다", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FileDownloadActivity.this, "게시물을 삭제하셨습니다", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }
@@ -793,7 +792,7 @@ public class App_downloadfile extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void v) {
-            Intent intent = new Intent(App_downloadfile.this, App_main.class);
+            Intent intent = new Intent(FileDownloadActivity.this, MainFragment.class);
             intent.putExtra("fileindex", pindex);
             intent.putExtra("writer", pwriter);
             intent.putExtra("filesubject", pfilesubject);
@@ -1067,7 +1066,7 @@ public class App_downloadfile extends AppCompatActivity {
             View v = convertView;
             if (v == null) {
                 LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.lv_commentlist, null);
+                v = vi.inflate(R.layout.listview_commentlist, null);
 
                 ViewHolder holder = new ViewHolder();
                 holder.llayout_commentlist = (LinearLayout) v.findViewById(R.id.llayout_commentlist);
@@ -1137,7 +1136,7 @@ public class App_downloadfile extends AppCompatActivity {
                 String url = URLlink + "/android/filestorage/profile/" + "profile_" + userNick + ".png";
 
                 bm_profile = Glide.
-                        with(App_downloadfile.this).
+                        with(FileDownloadActivity.this).
                         load(url).
                         asBitmap().
                         diskCacheStrategy(DiskCacheStrategy.NONE).
