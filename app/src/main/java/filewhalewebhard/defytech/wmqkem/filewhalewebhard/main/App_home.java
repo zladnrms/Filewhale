@@ -270,7 +270,7 @@ public class App_home extends Fragment {
                 holder.subject = (TextView) v.findViewById(R.id.tv_mainlist_subject);
                 holder.filename = (TextView) v.findViewById(R.id.tv_mainlist_filename);
                 holder.date = (TextView) v.findViewById(R.id.tv_mainlist_date);
-                holder.writerprofile = (CircularImageView) v.findViewById(R.id.iv_writerprofile);
+                holder.writerprofile = (CircularImageView) v.findViewById(R.id.iv_comment_writer_profile);
                 holder.item_rotateLoading = (RotateLoading) v.findViewById(R.id.item_rotateloading);
 
                 v.setTag(holder);

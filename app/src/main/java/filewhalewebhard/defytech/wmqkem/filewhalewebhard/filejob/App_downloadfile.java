@@ -70,6 +70,8 @@ public class App_downloadfile extends AppCompatActivity {
 
     // 파일 정보 객체 생성
     LinearLayout llayout_filecontent;
+    CircularImageView iv_writer_profile;
+    TextView tv_writer;
     TextView tv_filesubject;
     TextView tv_filecontent;
     TextView tv_filesize;
@@ -106,7 +108,7 @@ public class App_downloadfile extends AppCompatActivity {
 
     // 댓글 및 평점
     TextView tv_alert_comment;
-    LinearLayout llayout_comment, llayout_starnum;
+    LinearLayout llayout_comment;
     CircularImageView iv_comment_profile;
     EditText et_comment;
     Button btn_comment;
@@ -152,6 +154,8 @@ public class App_downloadfile extends AppCompatActivity {
         userNick = pref.getString("nick", "손님");
 
         llayout_filecontent = (LinearLayout) findViewById(R.id.llayout_filecontent);
+        iv_writer_profile = (CircularImageView) findViewById(R.id.iv_writer_profile);
+        tv_writer = (TextView) findViewById(R.id.tv_writer);
         tv_filesubject = (TextView) findViewById(R.id.tv_filesubject);
         tv_filecontent = (TextView) findViewById(R.id.tv_filecontent);
         tv_filesize = (TextView) findViewById(R.id.tv_filesize);
@@ -270,34 +274,6 @@ public class App_downloadfile extends AppCompatActivity {
         });
     }
 
-    // 평점 버튼 클릭 시 나타나는 Dialog
-    void showDialog(final double starNum) {
-        if(alreadyget){
-            AlertDialog.Builder builder = new AlertDialog.Builder(App_downloadfile.this);
-            // 팝업Dialog
-            // Dialog 기본설정
-            builder.setTitle("파일웨어");
-            builder.setMessage("이대로 평가하시겠습니까?");
-
-            builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-
-
-                }
-            });
-            builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                }
-            });
-
-            AlertDialog dialog = builder.create();    // 알림창 객체 생성=
-            dialog.show();
-        } else {
-            Toast.makeText(App_downloadfile.this, "다운로드 내역이 있어야 평점이 가능합니다.", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
     // 파일 정보 받아옴 처리 시작 ----------------------------------------------------------------//
 
     // 검색
@@ -384,7 +360,6 @@ public class App_downloadfile extends AppCompatActivity {
                         JSONObject obj = jarray.getJSONObject(i);
 
                         String writer = null, _id = null, subject = null, filename = null, filecategory = null, date = null, filecontent = null;
-                        double starNum = 0.0;
                         long filesize = 0;
 
                         if (!obj.isNull("_id")) {
@@ -392,6 +367,7 @@ public class App_downloadfile extends AppCompatActivity {
                         }
                         if (!obj.isNull("writer")) {
                             writer = obj.getString("writer");
+                            tv_writer.setText(writer);
                         }
                         if (!obj.isNull("subject")) {
                             subject = obj.getString("subject");
@@ -422,8 +398,12 @@ public class App_downloadfile extends AppCompatActivity {
                             str_getComment = obj.getString("comments");
                         }
 
-                        ArticleInfo articleInfo = new ArticleInfo(_id, writer, subject, filename, filecategory, filecontent, filesize, starNum, date);
+                        ArticleInfo articleInfo = new ArticleInfo(_id, writer, subject, filename, filecategory, filecontent, filesize, date);
                         setInfo(articleInfo);
+
+                        if (!writer.equals("")) {
+                            new getWriterProfile().execute();
+                        }
 
                         if (str_getComment != null) {
                             GetCommentList(str_getComment);
@@ -433,6 +413,43 @@ public class App_downloadfile extends AppCompatActivity {
             } catch (JSONException e) {
                 System.out.println("JSONException : " + e);
             }
+        }
+    }
+
+    // 이미지 가져오기 처리
+    private class getWriterProfile extends AsyncTask<Void, Void, Void> { // 불러오기
+
+        Bitmap bm_writer_profile;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try {
+                String url = URLlink + "/android/filestorage/profile/" + "profile_" + pwriter + ".png";
+
+                bm_writer_profile = Glide.
+                        with(App_downloadfile.this).
+                        load(url).
+                        asBitmap().
+                        diskCacheStrategy(DiskCacheStrategy.NONE).
+                        skipMemoryCache(true).
+                        error(R.drawable.ic_profile).
+                        fallback(R.drawable.ic_profile).
+                        placeholder(R.drawable.ic_profile).
+                        into(-1, -1).
+                        get();
+
+            } catch (final Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            iv_writer_profile.setImageBitmap(bm_writer_profile);
         }
     }
 
@@ -455,7 +472,6 @@ public class App_downloadfile extends AppCompatActivity {
 
         // 미리보기 썸네일
         if (pfilecategory.matches("비디오_"+".*")) {
-            btn_see.setText("영상 미리보기");
 
             Glide.
                     with(App_downloadfile.this).
@@ -468,7 +484,6 @@ public class App_downloadfile extends AppCompatActivity {
                     into(iv_filethumbnail);
         } else if(pfilecategory.matches("오디오_"+".*")){
             if(!covername.equals("")) {
-                btn_see.setText("음악 미리듣기");
 
                 Glide.
                         with(App_downloadfile.this).
@@ -481,7 +496,9 @@ public class App_downloadfile extends AppCompatActivity {
                         into(iv_filethumbnail);
             }
         } else if(pfilecategory.matches("이미지_"+".*")){
-            btn_see.setText("사진 미리보기");
+            btn_see.setText("확대보기");
+            btn_see.setTextColor(Color.parseColor("#FFFFFF"));
+            btn_see.setBackground(null);
 
             // GIF 파일 일 경우 대비
             GlideDrawableImageViewTarget ivTarget = new GlideDrawableImageViewTarget(iv_filethumbnail);
@@ -496,12 +513,14 @@ public class App_downloadfile extends AppCompatActivity {
                     into(ivTarget);
         } else if(pfilecategory.matches("기타_"+".*")){
             btn_see.setText("미리보기 지원하지 않음");
+            btn_see.setTextColor(Color.parseColor("#FFFFFF"));
+            btn_see.setBackground(null);
+
         }
 
         if(userNick.equals(pwriter)){
             btn_del.setVisibility(View.VISIBLE);
             tv_alert_comment.setVisibility(View.GONE);
-            llayout_starnum.setVisibility(View.GONE);
             llayout_comment.setVisibility(View.VISIBLE);
         }
     }
@@ -600,10 +619,9 @@ public class App_downloadfile extends AppCompatActivity {
         private String filecategory;
         private String filecontent;
         private long filesize;
-        private double starNum;
         private String date;
 
-        public ArticleInfo(String id, String _writer, String _subject, String _filename, String _filecategory, String _filecontent, long _filesize, double _starNum, String _date) {
+        public ArticleInfo(String id, String _writer, String _subject, String _filename, String _filecategory, String _filecontent, long _filesize, String _date) {
             this._id = id;
             this.writer = _writer;
             this.subject = _subject;
@@ -611,7 +629,6 @@ public class App_downloadfile extends AppCompatActivity {
             this.filecategory = _filecategory;
             this.filecontent = _filecontent;
             this.filesize = _filesize;
-            this.starNum = _starNum;
             this.date = _date;
         }
 
@@ -641,10 +658,6 @@ public class App_downloadfile extends AppCompatActivity {
 
         public long getFilesize() {
             return filesize;
-        }
-
-        public double getStarnum() {
-            return starNum;
         }
 
         public String getDate() {
@@ -1058,7 +1071,7 @@ public class App_downloadfile extends AppCompatActivity {
 
                 ViewHolder holder = new ViewHolder();
                 holder.llayout_commentlist = (LinearLayout) v.findViewById(R.id.llayout_commentlist);
-                holder.writerprofile = (CircularImageView) v.findViewById(R.id.iv_writerprofile);
+                holder.iv_comment_writer_profile = (CircularImageView) v.findViewById(R.id.iv_comment_writer_profile);
                 holder.item_rotateLoading = (RotateLoading) v.findViewById(R.id.item_rotateloading);
                 holder.writer = (TextView) v.findViewById(R.id.tv_commentlist_writer);
                 holder.comment = (TextView) v.findViewById(R.id.tv_commentlist_comment);
@@ -1078,9 +1091,9 @@ public class App_downloadfile extends AppCompatActivity {
                         holder.llayout_commentlist.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     }
                 }
-                if (holder.writerprofile != null) {
+                if (holder.iv_comment_writer_profile != null) {
                     if(!f_info.getListed()){
-                        new getProfile(f_info.getWriter(), holder.writerprofile, holder.item_rotateLoading).execute();
+                        new getProfile(f_info.getWriter(), holder.iv_comment_writer_profile, holder.item_rotateLoading).execute();
                         f_info.setListed(true);
                     }
                 }
@@ -1100,13 +1113,13 @@ public class App_downloadfile extends AppCompatActivity {
     private class getProfile extends AsyncTask<Void, Void, Void> { // 불러오기
 
         private String userNick = null;
-        private CircularImageView iv_writerprofile = null;
+        private CircularImageView iv_comment_writer_profile = null;
         private Bitmap bm_profile = null;
         private RotateLoading item_rotateLoading;
 
         private getProfile(String _userNick, CircularImageView _iv_writerprofile, RotateLoading _item_rotateLoading) {
             userNick = _userNick;
-            iv_writerprofile = _iv_writerprofile;
+            iv_comment_writer_profile = _iv_writerprofile;
             item_rotateLoading = _item_rotateLoading;
         }
 
@@ -1149,7 +1162,7 @@ public class App_downloadfile extends AppCompatActivity {
                 item_rotateLoading.stop();
             }
 
-            iv_writerprofile.setImageBitmap(bm_profile);
+            iv_comment_writer_profile.setImageBitmap(bm_profile);
         }
     }
 
@@ -1195,7 +1208,7 @@ public class App_downloadfile extends AppCompatActivity {
 
     static class ViewHolder {
         LinearLayout llayout_commentlist;
-        CircularImageView writerprofile;
+        CircularImageView iv_comment_writer_profile;
         RotateLoading item_rotateLoading;
         TextView writer;
         TextView comment;

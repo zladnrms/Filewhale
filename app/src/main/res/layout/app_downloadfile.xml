@@ -139,19 +139,26 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center" />
 
-                    <Button
-                        android:id="@+id/btn_see"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:background="#77000000"
                         android:paddingBottom="10dp"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:paddingTop="10dp"
-                        android:text="영상 미리보기"
-                        android:textColor="#ffffff"
-                        android:textSize="18dp" />
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:paddingTop="10dp">
+
+                        <Button
+                            android:id="@+id/btn_see"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:background="@drawable/ic_play"
+                            />
+
+                    </LinearLayout>
+
+
 
                 </FrameLayout>
 
@@ -179,14 +186,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:gravity="right">
 
                 <Button
                     android:id="@+id/btn_del"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="삭제"
-                    android:textSize="12dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ic_delete"
                     android:visibility="gone" />
 
             </LinearLayout>
